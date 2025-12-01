@@ -23,6 +23,13 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Yateesh S | Dev Blogs and Project Showcase" },
+    { name: "description", content: "Welcome to my portfolio. I'm Yateesh S, a freelance Web Designer & Developer showcasing my projects and skills." },
+  ];
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -33,7 +40,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <main className="max-w-6xl mx-auto px-6 my-8">
+          {children}
+        </main>
         <ScrollRestoration />
         <Scripts />
       </body>
