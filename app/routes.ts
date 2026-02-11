@@ -11,6 +11,7 @@ export default [
     route("about", "routes/about/index.tsx"),
     route("contact", "routes/contact/index.tsx"),
     route("projects", "routes/projects/index.tsx"),
+    route("projects/:id", "routes/projects/details.tsx"),
     route("blogs", "routes/blogs/index.tsx"),
   ]),
 ] satisfies RouteConfig;

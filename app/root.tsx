@@ -41,7 +41,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-
         <main>
           {children}
         </main>
