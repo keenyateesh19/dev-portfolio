@@ -2,13 +2,13 @@ import { Link } from "react-router";
 import type { Project } from "~/types";
 
 const ProjectCard = ({ project }: { project: Project }) => {
-  let date;
-  if(typeof window === 'undefined') {
-    date = new Date(project.date).toLocaleString();
-  }
+  const date = new Date(project.date).toISOString().split("T")[0];
 
   return (
-    <Link to={`/projects/${project.id}`} className="block transform transition duration-300 hover:scale-[1.02] self-stretch">
+    <Link
+      to={`/projects/${project.id}`}
+      className="block transform transition duration-300 hover:scale-[1.02] self-stretch"
+    >
       <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden shadow-sm transition hover:shadow-md min-h-full">
         <img
           src={project.image}
