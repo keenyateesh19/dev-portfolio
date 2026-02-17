@@ -3,17 +3,16 @@ import type { Route } from "./+types/index";
 import type { Project } from "~/types";
 import { useState } from "react";
 import Pagination from "~/components/Pagination";
+import { AnimatePresence, motion } from "framer-motion";
 
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  const res = await fetch("http://localhost:8000/projects");
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
   const projects = await res.json();
 
   return { projects };
 }
-
-
 
 const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const [categorySelect, setCategorySelect] = useState("All");
@@ -24,7 +23,10 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
     "All",
     ...new Set(projects.map((project) => project.category)),
   ];
-  const filteredProjects = categorySelect === 'All' ? projects : projects.filter((project) => project.category === categorySelect);
+  const filteredProjects =
+    categorySelect === "All"
+      ? projects
+      : projects.filter((project) => project.category === categorySelect);
 
   const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
 
@@ -38,7 +40,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
       <div className="flex gap-2 my-4">
         {categories.map((category) => (
           <button
-            className={`cursor-pointer py-2 px-4 rounded ${category === categorySelect ? "font-bold bg-blue-500 hover:bg-blue-600" : "bg-gray-800 hover:bg-gray-900"}`}
+            className={`cursor-pointer py-2 px-4 rounded-sm transition ${category === categorySelect ? "font-bold bg-blue-500 hover:bg-blue-600" : "bg-gray-800 hover:bg-gray-900"}`}
             onClick={() => {
               setCategorySelect(category);
               setCurrentPage(1);
@@ -49,9 +51,15 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
           </button>
         ))}
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {currentProjects.map((project) => (<ProjectCard project={project} key={project.id} />))}
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {currentProjects.map((project) => (
+            <motion.div key={project.id} layout>
+              <ProjectCard project={project} key={project.id} />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       {totalPages > 1 && (
         <Pagination
