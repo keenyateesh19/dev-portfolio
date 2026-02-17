@@ -1,8 +1,10 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: "Audiowide", sans-serif;
 }
 
 html,
@@ -13,3 +15,49 @@ body {
     color-scheme: dark;
   }
 }
+
+@layer base {
+
+  /* ===== Display ===== */
+  .display {
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    @apply font-semibold tracking-tight leading-[1.05] font-display;
+  }
+
+  /* ===== Headings ===== */
+  h1 {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    @apply font-semibold tracking-tight leading-tight;
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    @apply font-semibold tracking-tight leading-snug;
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    @apply font-semibold leading-snug;
+  }
+
+  h4 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    @apply font-medium leading-snug;
+  }
+
+  h5 {
+    font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+    @apply font-medium leading-normal;
+  }
+
+  h6 {
+    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    @apply font-medium leading-normal;
+  }
+
+  p {
+    @apply text-[clamp(1rem,1.2vw,1.25rem)] leading-[clamp(1.6,1.8vw,1.9)] tracking-[-0.01em] text-zinc-400 max-w-[65ch];
+  }
+
+}
+
