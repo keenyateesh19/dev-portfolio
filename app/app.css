@@ -80,5 +80,5 @@ body {
 }
 
 @utility btn-secondary {
-  @apply bg-blue-100 hover:bg-white text-gray-700 btn rise;
+  @apply bg-blue-100 hover:bg-white text-gray-700 btn rise border;
 }

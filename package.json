@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
+    "dev": "react-router dev --host",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "json-server": "json-server data/db.json --port 8000 & react-router dev"
+    "json-server": "json-server data/db.json --port 8000 & react-router dev --host"
   },
   "dependencies": {
     "@react-router/node": "^7.9.2",

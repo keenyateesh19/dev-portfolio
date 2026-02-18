@@ -20,12 +20,12 @@ const Hero = () => {
           animate={{ opacity: 1 }}
         >
           <motion.span
-            className="block bg-orange-400 h-2 w-2 rounded-full"
+            className="block bg-green-500 h-2 w-2 rounded-full"
             initial={{ opacity: 0.25, scale: 1 }}
             animate={{ opacity: 1, scale: 1.5 }}
-            transition={{ repeat: Infinity, duration: 1, repeatType: "mirror" }}
+            transition={{ repeat: Infinity, duration: 1, repeatType: "mirror"}}
           ></motion.span>{" "}
-          Scanning for new challenges...
+          <motion.span className="text-nowrap overflow-hidden" initial={{width: 0}} animate={{width: 'auto'}} transition={{duration: 3, repeat: Infinity, repeatType: 'reverse', repeatDelay: 1}}>Scanning for new challenges...</motion.span>
         </motion.span>
         <motion.h1
           className="font-display lg:max-w-[65%]"
@@ -46,7 +46,7 @@ const Hero = () => {
           Building meaningful things for the web. <br />
           With a focus on performance and real-world impact.
         </motion.p>
-        <div className="flex gap-2 md:gap-4">
+        <motion.div className="flex gap-2 md:gap-4" initial={{opacity: 0, y: 20}} animate={{opacity: 1, y: 0}}>
           <Link to="/projects" className="btn-primary">
             View Projects
           </Link>
@@ -54,9 +54,9 @@ const Hero = () => {
             to="/contact"
             className="btn-secondary"
           >
-            Contact
+            Contact Me
           </Link>
-        </div>
+        </motion.div>
       </div>
     </header>
   );

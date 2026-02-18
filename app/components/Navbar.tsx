@@ -3,12 +3,11 @@ import { FaTimes } from "react-icons/fa";
 import { FaBars } from "react-icons/fa6";
 import { NavLink } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
+import logoLink from "/YTlogo.png";
 
 const NavBar = () => {
-  const base =
-    "transition hover:text-blue-400 font-semibold px-1 text-[1.25rem]";
-  const active =
-    "text-blue-400 font-semibold px-1 text-[1.25rem] glass-transparent py-3 px-4";
+  const base = "transition hover:text-blue-400";
+  const active = " glass-transparent p-2 border-b-3 border-b-white";
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
   const pagePath: Record<string, string> = {
@@ -41,13 +40,20 @@ const NavBar = () => {
             className="flex items-center gap-2 text-lg font-bold text-blue-300"
             onClick={closeMenu}
           >
-            <span className="font-display">YATEESH.TECH</span>
+            <span className="font-display">
+              <img
+                className="w-8 md:w-10"
+                src={logoLink}
+                alt="Yateesh.tech Logo"
+              />
+            </span>
           </NavLink>
 
           <div className="hidden md:flex items-center gap-6">
             <div className="space-x-4 text-sm text-gray-200">
               {Object.keys(pagePath).map((page) => (
                 <NavLink
+                  key={page}
                   className={({ isActive }) => (isActive ? active : base)}
                   to={pagePath[page as keyof typeof pagePath]}
                 >
@@ -59,7 +65,7 @@ const NavBar = () => {
 
           <div className="md:hidden grid place-items-center">
             <button
-              className="text-blue-400 text-xl cursor-pointer"
+              className="text-xl cursor-pointer"
               title="Menu"
               onClick={() => setMenuOpen(!menuOpen)}
             >
@@ -75,11 +81,10 @@ const NavBar = () => {
               initial="start"
               animate="end"
               exit="start"
-              transition={{staggerChildren: 0.15, duration: 0.85}}
-              
+              transition={{ staggerChildren: 0.15, duration: 0.85 }}
             >
               {Object.keys(pagePath).map((page) => (
-                <motion.span variants={links}>
+                <motion.span key={page} variants={links}>
                   <NavLink
                     className={({ isActive }) => (isActive ? active : base)}
                     to={pagePath[page as keyof typeof pagePath]}
