@@ -1,9 +1,9 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: "Audiowide", sans-serif;
 }
 
@@ -17,7 +17,6 @@ body {
 }
 
 @layer base {
-
   /* ===== Display ===== */
   .display {
     font-size: clamp(2.75rem, 6vw, 4.5rem);
@@ -56,8 +55,30 @@ body {
   }
 
   p {
-    @apply text-[clamp(1rem,1.2vw,1.25rem)] leading-[clamp(1.6,1.8vw,1.9)] tracking-[-0.01em] text-zinc-400 max-w-[65ch];
+    @apply text-[clamp(1rem,1.2vw,1.25rem)] leading-[clamp(1.6,1.8vw,1.9)] tracking-[-0.01em] max-w-[65ch];
   }
-
 }
 
+@utility glass {
+  @apply bg-white/10 rounded backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+@utility glass-transparent {
+  @apply rounded bg-white/10 border border-white/20 shadow-lg;
+}
+
+@utility btn {
+  @apply px-4 py-2 rounded font-semibold grid place-items-center hover:font-bold;
+}
+
+@utility rise {
+  @apply hover:-translate-y-1 hover:shadow transition;
+}
+
+@utility btn-primary {
+  @apply glass btn rise;
+}
+
+@utility btn-secondary {
+  @apply bg-blue-100 hover:bg-white text-gray-700 btn rise;
+}
