@@ -142,7 +142,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
               Projects
             </span>
           </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-300 max-w-2xl mx-auto">
             A collection of my work spanning web development, design, and
             creative experiments. Each project represents a unique challenge and
             solution.
