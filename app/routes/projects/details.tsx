@@ -40,7 +40,6 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <section className="min-h-screen px-4 py-20 relative overflow-hidden">
-      <PageBackground />
 
       <div className="max-w-5xl mx-auto relative z-10 pt-16">
         {/* Back link */}
