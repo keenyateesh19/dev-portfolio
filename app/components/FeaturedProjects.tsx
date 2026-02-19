@@ -27,9 +27,6 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
 
   return (
     <section className="relative py-24 px-4 overflow-hidden">
-      {/* Subtle section separator line */}
-      <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
-
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div

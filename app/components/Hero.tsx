@@ -51,7 +51,7 @@ const Hero = () => {
   };
 
   return (
-    <header className="h-screen bg-amber-100 w-full relative">
+    <header className="h-screen w-full relative">
       <div className="absolute w-full h-svh z-0">
         <LetterGlitch
           glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
@@ -118,6 +118,11 @@ const Hero = () => {
           </motion.span>
         </motion.div>
       </div>
+
+      {/* Bottom fade — dissolves into the page background */}
+      <div
+        className="pointer-events-none absolute bottom-0 inset-x-0 z-2 h-64 bg-linear-to-b from-transparent to-gray-950"
+      />
     </header>
   );
 };
