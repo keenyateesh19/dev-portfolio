@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { FaBars } from "react-icons/fa6";
+import { useState, type JSX } from "react";
+import {
+  FaHome,
+  FaProjectDiagram,
+  FaPager,
+  FaUser,
+  FaEnvelope,
+  FaBars,
+} from "react-icons/fa";
 import { NavLink } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import logoLink from "/YTlogo.png";
+import { FaBarsStaggered } from "react-icons/fa6";
 
 const NavBar = () => {
-  const base = "transition hover:text-blue-400";
-  const active = " glass-transparent p-2 border-b-3 border-b-white";
+  const base = "transition hover:text-blue-400 flex items-center gap-2 hover:glass-transparent p-2";
+  const active =
+    " glass-transparent p-2 border-b-3 border-b-white flex items-center gap-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
   const pagePath: Record<string, string> = {
@@ -25,6 +33,14 @@ const NavBar = () => {
   const links = {
     start: { opacity: 0, x: 10 },
     end: { opacity: 1, x: 0 },
+  };
+
+  const linkIcons: Record<string, JSX.Element> = {
+    Home: <FaHome />,
+    Projects: <FaProjectDiagram />,
+    Blogs: <FaPager />,
+    About: <FaUser />,
+    Contact: <FaEnvelope />,
   };
 
   return (
@@ -50,14 +66,14 @@ const NavBar = () => {
           </NavLink>
 
           <div className="hidden md:flex items-center gap-6">
-            <div className="space-x-4 text-sm text-gray-200">
+            <div className="space-x-6 text-sm text-gray-200 flex items-center">
               {Object.keys(pagePath).map((page) => (
                 <NavLink
                   key={page}
                   className={({ isActive }) => (isActive ? active : base)}
                   to={pagePath[page as keyof typeof pagePath]}
                 >
-                  {page}
+                  {linkIcons[page]}{page}
                 </NavLink>
               ))}
             </div>
@@ -69,7 +85,7 @@ const NavBar = () => {
               title="Menu"
               onClick={() => setMenuOpen(!menuOpen)}
             >
-              {menuOpen ? <FaTimes /> : <FaBars />}
+              {menuOpen ? <FaBarsStaggered /> : <FaBars />}
             </button>
           </div>
         </div>
@@ -90,7 +106,7 @@ const NavBar = () => {
                     to={pagePath[page as keyof typeof pagePath]}
                     onClick={closeMenu}
                   >
-                    {page}
+                    {linkIcons[page]}{page}
                   </NavLink>
                 </motion.span>
               ))}
