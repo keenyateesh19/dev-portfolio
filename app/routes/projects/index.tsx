@@ -4,7 +4,6 @@ import type { Project } from "~/types";
 import { useState } from "react";
 import Pagination from "~/components/Pagination";
 import { AnimatePresence, motion } from "framer-motion";
-import PageBackground from "~/components/PageBackground";
 
 export async function loader({
   request,
@@ -61,7 +60,6 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <section className="min-h-screen py-20 px-4 relative overflow-hidden">
-      <PageBackground />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <motion.div

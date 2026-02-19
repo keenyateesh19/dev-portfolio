@@ -1,8 +1,13 @@
-const PageBackground = () => (
-  <>
+const PageBackground = ({ fixed = false }: { fixed?: boolean }) => (
+  <div
+    aria-hidden="true"
+    className={`pointer-events-none inset-0 z-0 overflow-hidden ${
+      fixed ? "fixed" : "absolute"
+    }`}
+  >
     {/* Crossed diagonal lines */}
     <div
-      className="pointer-events-none absolute inset-0 z-0"
+      className="absolute inset-0"
       style={{
         backgroundImage: `
           repeating-linear-gradient(
@@ -24,7 +29,7 @@ const PageBackground = () => (
     />
     {/* Grid lines */}
     <div
-      className="pointer-events-none absolute inset-0 z-0"
+      className="absolute inset-0"
       style={{
         backgroundImage: `
           repeating-linear-gradient(
@@ -46,7 +51,7 @@ const PageBackground = () => (
     />
     {/* Radial vignette */}
     <div
-      className="pointer-events-none absolute inset-0 z-0"
+      className="absolute inset-0"
       style={{
         background:
           "radial-gradient(ellipse 100% 80% at 50% 50%, transparent 55%, rgb(3 7 18) 100%)",
@@ -54,7 +59,7 @@ const PageBackground = () => (
     />
     {/* Blue glow top center */}
     <div
-      className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-225 h-150 z-0"
+      className="absolute top-0 left-1/2 -translate-x-1/2 w-225 h-150"
       style={{
         background:
           "radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.22) 0%, transparent 65%)",
@@ -62,13 +67,13 @@ const PageBackground = () => (
     />
     {/* Purple accent glow bottom right */}
     <div
-      className="pointer-events-none absolute bottom-0 right-0 w-150 h-100 z-0"
+      className="absolute bottom-0 right-0 w-150 h-100"
       style={{
         background:
           "radial-gradient(ellipse at 100% 100%, rgba(147,51,234,0.12) 0%, transparent 60%)",
       }}
     />
-  </>
+  </div>
 );
 
 export default PageBackground;
