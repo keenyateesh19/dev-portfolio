@@ -18,7 +18,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const [categorySelect, setCategorySelect] = useState("All");
   const { projects } = loaderData as { projects: Project[] };
   const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 10;
+  const projectsPerPage = 9;
   const categories = [
     "All",
     ...new Set(projects.map((project) => project.category)),
@@ -34,41 +34,198 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const indexOfFirst = indexOfLast - projectsPerPage;
   const currentProjects = filteredProjects.slice(indexOfFirst, indexOfLast);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
+
   return (
-    <>
-      <h2 className="text-3xl text-white font-bold mb-8">🚀 Projects</h2>
-      <div className="flex gap-2 my-4">
-        {categories.map((category) => (
-          <button
-            className={`cursor-pointer py-2 px-4 rounded-sm transition ${category === categorySelect ? "font-bold bg-blue-500 hover:bg-blue-600" : "bg-gray-800 hover:bg-gray-900"}`}
-            onClick={() => {
-              setCategorySelect(category);
-              setCurrentPage(1);
-            }}
-            key={category}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-      <AnimatePresence mode="wait">
-        <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {currentProjects.map((project) => (
-            <motion.div key={project.id} layout>
-              <ProjectCard project={project} key={project.id} />
-            </motion.div>
+    <section className="min-h-screen py-20 px-4 relative overflow-hidden">
+      {/* Diagonal slanted lines — Tailwind v4 style */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundImage: `
+            repeating-linear-gradient(
+              -45deg,
+              rgba(255,255,255,0.07) 0px,
+              rgba(255,255,255,0.07) 1px,
+              transparent 1px,
+              transparent 28px
+            ),
+            repeating-linear-gradient(
+              45deg,
+              rgba(255,255,255,0.04) 0px,
+              rgba(255,255,255,0.04) 1px,
+              transparent 1px,
+              transparent 28px
+            )
+          `,
+        }}
+      />
+      {/* Horizontal lines */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundImage: `
+            repeating-linear-gradient(
+              0deg,
+              rgba(255,255,255,0.06) 0px,
+              rgba(255,255,255,0.06) 1px,
+              transparent 1px,
+              transparent 64px
+            ),
+            repeating-linear-gradient(
+              90deg,
+              rgba(255,255,255,0.04) 0px,
+              rgba(255,255,255,0.04) 1px,
+              transparent 1px,
+              transparent 64px
+            )
+          `,
+        }}
+      />
+      {/* Radial vignette — only soft fade at very edges */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 100% 80% at 50% 50%, transparent 55%, rgb(3 7 18) 100%)",
+        }}
+      />
+      {/* Blue glow top center */}
+      <div
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-225 h-150 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.22) 0%, transparent 65%)",
+        }}
+      />
+      {/* Purple accent glow bottom right */}
+      <div
+        className="pointer-events-none absolute bottom-0 right-0 w-150 h-100 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 100% 100%, rgba(147,51,234,0.12) 0%, transparent 60%)",
+        }}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Section */}
+        <motion.div
+          className="text-center mb-12 pt-20 pb-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-white mb-4 font-display">
+            Curated{" "}
+            <span className="bg-linear-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              Projects
+            </span>
+          </h1>
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            A collection of my work spanning web development, design, and
+            creative experiments. Each project represents a unique challenge and
+            solution.
+          </p>
+        </motion.div>
+
+        {/* Category Filter Pills */}
+        <motion.div
+          className="flex flex-wrap justify-center gap-3 mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          {categories.map((category, index) => (
+            <motion.button
+              key={category}
+              className={`glass-transparent px-6 py-2.5 text-sm font-medium transition-all cursor-pointer ${
+                category === categorySelect
+                  ? "bg-blue-500/30 text-white outline-blue-400/50"
+                  : "text-gray-300 hover:bg-white/15"
+              }`}
+              onClick={() => {
+                setCategorySelect(category);
+                setCurrentPage(1);
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.05 }}
+            >
+              {category}
+            </motion.button>
           ))}
         </motion.div>
-      </AnimatePresence>
 
-      {totalPages > 1 && (
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-        />
-      )}
-    </>
+        {/* Projects Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={categorySelect + currentPage}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="mx-6 grid gap-6 sm:grid-cols-2 lg:gap-12 lg:grid-cols-3 mb-12"
+          >
+            {currentProjects.map((project) => (
+              <motion.div key={project.id} variants={itemVariants} layout>
+                <ProjectCard project={project} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Empty State */}
+        {currentProjects.length === 0 && (
+          <motion.div
+            className="glass text-center py-16 px-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <p className="text-gray-300 text-lg">
+              No projects found in this category.
+            </p>
+          </motion.div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
+          </motion.div>
+        )}
+      </div>
+    </section>
   );
 };
 
