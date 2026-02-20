@@ -47,7 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-gray-950 text-white">
         <PageBackground fixed />
-        <main>{children}</main>
+        <main className="max-w-7xl">{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>

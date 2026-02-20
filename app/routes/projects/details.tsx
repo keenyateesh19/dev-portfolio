@@ -67,9 +67,9 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
           <img
             src={project.image}
             alt={project.title}
-            className="w-full max-h-[480px] object-cover"
+            className="w-full max-h-120 object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-gray-950/70 via-transparent to-transparent" />
         </motion.div>
 
         {/* Title */}
