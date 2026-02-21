@@ -12,3 +12,13 @@ export type Project = {
   challenges?: string;
   learnings?: string;
 };
+
+export type Experience = {
+  role: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  description: string;
+  technologies: string[];
+}

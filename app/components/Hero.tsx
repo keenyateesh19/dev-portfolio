@@ -51,7 +51,7 @@ const Hero = () => {
   };
 
   return (
-    <header className="h-screen w-full relative">
+    <header className="h-screen max-w-full! px-0! mx-auto relative">
       <div className="absolute w-full h-svh z-0">
         <LetterGlitch
           glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
@@ -61,7 +61,7 @@ const Hero = () => {
         />
       </div>
 
-      <div className="h-screen absolute z-1 w-full flex flex-col justify-center items-center text-center px-6 gap-4">
+      <div className="h-screen absolute z-1 left-0 right-0 flex flex-col justify-center items-center text-center gap-4">
         <motion.span
           className="glass px-4 flex justify-center items-center gap-3 font-thin"
           initial={{ opacity: 0 }}

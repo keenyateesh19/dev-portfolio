@@ -1,4 +1,39 @@
 {
+  "experiences": [
+  {
+    "role": "Full Stack Developer",
+    "company": "Acme Corp",
+    "location": "Bangalore, India",
+    "startDate": "Jan 2024",
+    "endDate": "Present",
+    "description":
+      "Built and maintained scalable web applications serving thousands of users. Led the migration of a monolithic backend to microservices, reducing latency by 40%.",
+    "technologies": ["React", "Node.js", "TypeScript", "PostgreSQL", "Docker"]
+  },
+  {
+    "role": "Frontend Engineer Intern",
+    "company": "Startup XYZ",
+    "location": "Remote",
+    "startDate": "Jun 2023",
+    "endDate": "Dec 2023",
+    "description":
+      "Developed responsive UI components with React and collaborated closely with designers to deliver pixel-perfect interfaces. Improved Lighthouse performance score from 62 to 94.",
+    "technologies": ["React", "Tailwind CSS", "Vite", "Figma"]
+  },
+  {
+    "role": "Frontend Developer",
+    "company": "Eco Tours Karnataka",
+    "location": "Bengaluru, India",
+    "startDate": "March 2024",
+    "endDate": "Sep 2024",
+    "description": "Developed responsive UI components with React and collaborated closely with designers to deliver pixel-perfect interfaces. Improved Lighthouse performance score from 62 to 94.",
+    "technologies": ["React", "Tailwind CSS", "Vite", "Figma"]
+  }
+],
+
+
+
+
   "projects": [
     {
       "id": 1,
