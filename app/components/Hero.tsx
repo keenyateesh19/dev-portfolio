@@ -112,8 +112,8 @@ const Hero = () => {
             </Link>
           </motion.span>
           <motion.span variants={buttonVariants} whileHover={{ y: -5 }}>
-            <Link to="/contact" className="btn-secondary">
-              Contact Me
+            <Link to="/about" className="btn-secondary">
+              Check About
             </Link>
           </motion.span>
         </motion.div>

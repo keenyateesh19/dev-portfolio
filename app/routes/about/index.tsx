@@ -74,11 +74,9 @@ const AboutPage = ({ loaderData }: Route.ComponentProps) => {
             status="“Thrill-seeker. Builder. Problem-solver.”"
             contactText="Contact"
             avatarUrl="/profile.webp"
-            showUserInfo={true}
+            showUserInfo={false}
             enableTilt={true}
             innerGradient="linear-gradient(145deg,transparent 0%, transparent 100%)"
-            handle="keenyateesh"
-            onContactClick={() => navigate("/contact")}
           />
         </div>
       </section>

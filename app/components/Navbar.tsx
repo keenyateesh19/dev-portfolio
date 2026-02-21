@@ -23,7 +23,6 @@ const NavBar = () => {
     Projects: "/projects",
     Blogs: "/blogs",
     About: "/about",
-    Contact: "/contact",
   };
   const navContainer = {
     start: { opacity: 0, y: -10 },
