@@ -2,6 +2,7 @@ import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import ExperienceCard from "~/components/ExperienceCard";
 import ProfileCard from "~/components/ProfileCard";
+import SkillsSection from "~/components/SkillsSection";
 import type { Experience } from "~/types";
 import type { Route } from "./+types";
 
@@ -97,6 +98,8 @@ const AboutPage = ({ loaderData }: Route.ComponentProps) => {
           ))}
         </div>
       </section>
+      {/* Skills */}
+      <SkillsSection />
     </>
   );
 };

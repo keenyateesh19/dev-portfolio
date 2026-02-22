@@ -79,7 +79,7 @@ const Footer = () => {
         <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
           <span>&copy; {year} Yateesh. All rights reserved.</span>
           <span className="text-gray-400">
-            Built with React Router V7 &amp; Tailwind CSS
+            Built with React Router V7, Tailwind CSS, Motion &amp; Strapi
           </span>
         </div>
       </div>
