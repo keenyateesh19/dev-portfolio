@@ -76,10 +76,10 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+        <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
           <span>&copy; {year} Yateesh. All rights reserved.</span>
-          <span className="text-gray-700">
-            Built with React &amp; Tailwind CSS
+          <span className="text-gray-400">
+            Built with React Router V7 &amp; Tailwind CSS
           </span>
         </div>
       </div>
