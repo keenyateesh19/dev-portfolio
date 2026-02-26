@@ -1,6 +1,19 @@
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router";
 import ProfileCard from "~/components/ProfileCard";
+
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE, delay },
+  }),
+};
 
 interface BioSectionProps {
   ctaHref?: string;
@@ -11,20 +24,49 @@ const BioSection = ({
   ctaHref,
   ctaLabel = "See my experience",
 }: BioSectionProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <div className="grid md:grid-cols-2 items-center justify-center gap-12 md:gap-8">
+    <div
+      ref={ref}
+      className="grid md:grid-cols-2 items-center justify-center gap-12 md:gap-8"
+    >
       {/* Bio + Card */}
-      <div>
-        <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-4 inline-block">
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        custom={0}
+      >
+        <motion.span
+          className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-4 inline-block"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.05}
+        >
           More about me
-        </span>
-        <h1 className="font-display mb-4">
+        </motion.span>
+        <motion.h1
+          className="font-display mb-4"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.15}
+        >
           Adrenaline Fueled.{" "}
           <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             Impact Driven.
           </span>
-        </h1>
-        <div className="text-zinc-400">
+        </motion.h1>
+        <motion.div
+          className="text-zinc-400"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.25}
+        >
           <p className="mb-2">
             I live for the thrill of the unknown on treks, in ideas and in the
             things I build. As an explorer at heart and a builder by passion,
@@ -42,8 +84,14 @@ const BioSection = ({
             what exists today and that's what keeps me chasing ideas that can
             make a lasting impact.
           </p>
-        </div>
-        <div className="flex items-center gap-6 md:gap-8 flex-wrap">
+        </motion.div>
+        <motion.div
+          className="flex items-center gap-6 md:gap-8 flex-wrap"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.35}
+        >
           <a href="https://github.com/keenyateesh19" target="_blank">
             <FaGithub className="size-8 hover:text-blue-400" />
           </a>
@@ -56,14 +104,26 @@ const BioSection = ({
           <a href="mailto:reachme@yateesh.tech" target="_blank">
             <FaEnvelope className="size-8 hover:text-blue-400" />
           </a>
-        </div>
+        </motion.div>
         {ctaHref && (
-          <Link to={ctaHref} className="btn-primary float-left mt-6 md:mt-8">
-            {ctaLabel} →
-          </Link>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            custom={0.45}
+          >
+            <Link to={ctaHref} className="btn-primary float-left mt-6 md:mt-8">
+              {ctaLabel} →
+            </Link>
+          </motion.div>
         )}
-      </div>
-      <div className="">
+      </motion.div>
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        custom={0.2}
+      >
         <ProfileCard
           className="w-full max-w-sm mx-auto"
           name="Yateesh S"
@@ -75,7 +135,7 @@ const BioSection = ({
           enableTilt={true}
           innerGradient="linear-gradient(145deg,transparent 0%, transparent 100%)"
         />
-      </div>
+      </motion.div>
     </div>
   );
 };

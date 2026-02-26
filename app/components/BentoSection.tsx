@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import createGlobe from "cobe";
 import confetti from "canvas-confetti";
-import { FaCopy, FaCheck, FaRocket, FaEnvelope } from "react-icons/fa";
+import { FaCopy, FaCheck, FaEnvelope } from "react-icons/fa";
+import { FaHeartCircleCheck } from "react-icons/fa6";
 
 const EMAIL = "reachme@yateesh.tech";
 
@@ -36,9 +38,9 @@ function GlobeTile() {
       glowColor: [0.12, 0.28, 0.65],
       markers: [
         { location: [37.09, -95.71], size: 0.08 }, // USA
-        { location: [51.51, -0.13], size: 0.08 },  // UK
-        { location: [50.11, 8.68], size: 0.07 },   // Europe (Frankfurt)
-        { location: [20.59, 78.96], size: 0.09 },  // India
+        { location: [51.51, -0.13], size: 0.08 }, // UK
+        { location: [50.11, 8.68], size: 0.07 }, // Europe (Frankfurt)
+        { location: [20.59, 78.96], size: 0.09 }, // India
       ],
       onRender(state) {
         if (!isDragging.current) phi.current += 0.004;
@@ -65,8 +67,12 @@ function GlobeTile() {
         extraPhi.current += (e.clientX - lastX.current) / 280;
         lastX.current = e.clientX;
       }}
-      onMouseUp={() => { isDragging.current = false; }}
-      onMouseLeave={() => { isDragging.current = false; }}
+      onMouseUp={() => {
+        isDragging.current = false;
+      }}
+      onMouseLeave={() => {
+        isDragging.current = false;
+      }}
     >
       {/* background gradient */}
       <div className="absolute inset-0 bg-linear-to-b from-blue-950/30 via-transparent to-[#07080f] pointer-events-none z-1" />
@@ -167,7 +173,6 @@ function ContactTile() {
             bring your ideas to life
           </span>
         </h3>
-
       </div>
 
       <div className="relative z-10 mt-2">
@@ -175,31 +180,35 @@ function ContactTile() {
           ref={btnRef}
           onClick={handleCopy}
           className={`group relative w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all duration-300 overflow-hidden
-            ${copied
-              ? "bg-green-500/10 border-green-400/40 text-green-300"
-              : "bg-blue-500/8 border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-500/15 text-blue-200"
+            ${
+              copied
+                ? "bg-green-500/10 border-green-400/40 text-green-300"
+                : "bg-blue-500/8 border-blue-400/20 hover:border-blue-400/50 hover:bg-blue-500/15 text-blue-200"
             }`}
         >
           {/* Shimmer sweep on hover */}
           <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/5 to-transparent" />
 
-          <span className={`shrink-0 p-2 rounded-lg transition-colors duration-300 ${copied ? "bg-green-500/20" : "bg-blue-500/15 group-hover:bg-blue-500/25"}`}>
-            {copied
-              ? <FaCheck className="text-green-400 text-sm" />
-              : <FaEnvelope className="text-blue-400 text-sm" />
-            }
+          <span
+            className={`shrink-0 p-2 rounded-lg transition-colors duration-300 ${copied ? "bg-green-500/20" : "bg-blue-500/15 group-hover:bg-blue-500/25"}`}
+          >
+            {copied ? (
+              <FaCheck className="text-green-400 text-sm" />
+            ) : (
+              <FaEnvelope className="text-blue-400 text-sm" />
+            )}
           </span>
 
           <span className="flex-1 text-left">
             <span className="block text-xs text-zinc-500 mb-0.5">
               {copied ? "Copied!" : "Email me at"}
             </span>
-            <span className="block text-sm font-mono truncate">
-              {EMAIL}
-            </span>
+            <span className="block text-sm font-mono truncate">{EMAIL}</span>
           </span>
 
-          <span className={`shrink-0 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-40 group-hover:opacity-100"}`}>
+          <span
+            className={`shrink-0 transition-opacity duration-300 ${copied ? "opacity-0" : "opacity-40 group-hover:opacity-100"}`}
+          >
             <FaCopy className="text-xs" />
           </span>
         </button>
@@ -233,11 +242,11 @@ function BehindScenesTile() {
         </h3>
 
         <div className="flex items-start gap-3 px-3.5 py-3 rounded-xl bg-purple-500/10 border border-purple-400/20">
-          <FaRocket className="text-purple-400 mt-0.5 shrink-0" />
+          <FaHeartCircleCheck className="text-purple-400 mt-0.5 shrink-0" />
           <div>
-            <p className="text-white text-sm font-medium">A SaaS Product</p>
+            <p className="text-white text-sm font-medium">Life OS</p>
             <p className="text-zinc-500 text-xs mt-0.5 leading-relaxed">
-              Designing, building &amp; shipping in public
+              UI Design in progress
             </p>
           </div>
         </div>
@@ -246,30 +255,70 @@ function BehindScenesTile() {
   );
 }
 
+// ─── Animation helpers ────────────────────────────────────────────────────────
+
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 32 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE, delay },
+  }),
+};
+
 // ─── Exported Section ─────────────────────────────────────────────────────────
 
 const BentoSection = () => {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-12">
-      <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block">
+    <section ref={ref} className="py-12">
+      <motion.span
+        className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block"
+        variants={fadeUp}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        custom={0}
+      >
         Quick look
-      </span>
+      </motion.span>
 
       <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 md:h-120">
         {/* Globe — spans 2 rows on desktop */}
-        <div className="min-h-85 md:min-h-0 md:col-span-2 md:row-span-2 md:h-full">
+        <motion.div
+          className="min-h-85 md:min-h-0 md:col-span-2 md:row-span-2 md:h-full"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.1}
+        >
           <GlobeTile />
-        </div>
+        </motion.div>
 
         {/* Contact */}
-        <div className="md:h-full">
+        <motion.div
+          className="md:h-full"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.25}
+        >
           <ContactTile />
-        </div>
+        </motion.div>
 
         {/* Behind the scenes */}
-        <div className="md:h-full">
+        <motion.div
+          className="md:h-full"
+          variants={fadeUp}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          custom={0.4}
+        >
           <BehindScenesTile />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
