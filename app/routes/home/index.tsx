@@ -1,4 +1,6 @@
 import Hero from "~/components/Hero";
+import BioSection from "~/components/BioSection";
+import BentoSection from "~/components/BentoSection";
 import FeaturedProjects from "~/components/FeaturedProjects";
 import SkillsSection from "~/components/SkillsSection";
 import type { Route } from "./+types/index";
@@ -18,7 +20,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Hero />
+      <section className="py-12">
+        <BioSection ctaHref="/about#experience" ctaLabel="See my experience" />
+      </section>
       <FeaturedProjects projects={featuredProjects} />
+      <BentoSection />
       <SkillsSection />
     </>
   );

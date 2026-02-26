@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { NavLink } from "react-router";
-import { FaHome, FaProjectDiagram, FaPager, FaUser } from "react-icons/fa";
+import {
+  FaHome,
+  FaProjectDiagram,
+  FaPager,
+  FaUser,
+  FaCopy,
+  FaCheck,
+} from "react-icons/fa";
 import logoLink from "/YTlogo.png";
 
 const navLinks = [
@@ -11,6 +19,28 @@ const navLinks = [
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    if (navigator.clipboard?.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    return Promise.resolve();
+  };
+
+  const handleCopy = () => {
+    copyToClipboard("reachme@yateesh.tech");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <footer className="relative mt-24 border-t border-white/10 glass w-screen!">
@@ -72,6 +102,25 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+              Contact
+            </h3>
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-white transition-colors group w-fit"
+              title={copied ? "Copied!" : "Copy email"}
+            >
+              <span className="text-xs opacity-70 group-hover:opacity-100 transition-opacity">
+                {copied ? <FaCheck className="text-green-400" /> : <FaCopy />}
+              </span>
+              <span className={copied ? "text-green-400" : ""}>
+                reachme@yateesh.tech
+              </span>
+            </button>
           </div>
         </div>
 

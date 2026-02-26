@@ -12,6 +12,8 @@
   "dependencies": {
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
+    "canvas-confetti": "^1.9.4",
+    "cobe": "^0.6.5",
     "framer-motion": "^12.34.0",
     "isbot": "^5.1.31",
     "react": "^19.1.1",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "@react-router/dev": "^7.9.2",
     "@tailwindcss/vite": "^4.1.13",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",

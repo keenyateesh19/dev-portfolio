@@ -26,7 +26,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   const [primary, ...rest] = projects;
 
   return (
-    <section className="relative py-24 px-4 overflow-hidden">
+    <section className="relative py-12 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div

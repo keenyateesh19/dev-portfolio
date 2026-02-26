@@ -71,7 +71,7 @@ const SkillsSection = () => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section ref={skillsRef} className="my-16">
+    <section ref={skillsRef} className="py-12">
       <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block">
         My Skills
       </span>
@@ -85,7 +85,7 @@ const SkillsSection = () => {
       {/* Grid wrapper — clipped when collapsed */}
       <div className="relative">
         <motion.div
-          animate={{ maxHeight: expanded ? 2000 : 350 }}
+          animate={{ maxHeight: expanded ? 2000 : 300 }}
           transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           className="overflow-hidden"
         >
@@ -136,7 +136,7 @@ const SkillsSection = () => {
       <div className="mt-6 flex justify-center">
         <button
           onClick={() => setExpanded((v) => !v)}
-          className="glass px-6 py-2.5 rounded text-sm font-medium text-zinc-300 hover:text-white hover:bg-white/15 transition-all duration-200 flex items-center gap-2"
+          className="btn-primary flex gap-3"
         >
           {expanded ? "See less" : "See more"}
           <motion.span

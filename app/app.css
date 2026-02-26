@@ -64,7 +64,7 @@ body {
 }
 
 @utility btn {
-  @apply px-4 py-2 rounded font-semibold grid place-items-center hover:font-bold;
+  @apply px-4 py-2 font-[500] rounded grid place-items-center cursor-pointer;
 }
 
 @utility rise {
@@ -76,5 +76,5 @@ body {
 }
 
 @utility btn-secondary {
-  @apply bg-blue-100 hover:bg-white text-gray-700 btn rise border;
+  @apply bg-blue-100 hover:bg-white text-black btn rise border;
 }
