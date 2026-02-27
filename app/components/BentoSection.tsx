@@ -10,48 +10,77 @@ const EMAIL = "reachme@yateesh.tech";
 // ─── Globe Tile ───────────────────────────────────────────────────────────────
 
 function GlobeTile() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const phi = useRef(0);
   const isDragging = useRef(false);
   const lastX = useRef(0);
-  const extraPhi = useRef(0);
 
   useEffect(() => {
-    if (!canvasRef.current || !containerRef.current) return;
-    const canvas = canvasRef.current;
     const container = containerRef.current;
+    if (!container) return;
 
-    const DPR = 2;
-    const globe = createGlobe(canvas, {
-      devicePixelRatio: DPR,
-      width: container.offsetHeight * DPR,
-      height: container.offsetHeight * DPR,
-      phi: 0,
-      theta: 0.22,
-      dark: 1,
-      diffuse: 1.2,
-      mapSamples: 20000,
-      mapBrightness: 6,
-      baseColor: [0.05, 0.05, 0.13],
-      markerColor: [0.25, 0.55, 1.0],
-      glowColor: [0.12, 0.28, 0.65],
-      markers: [
-        { location: [37.09, -95.71], size: 0.08 }, // USA
-        { location: [51.51, -0.13], size: 0.08 }, // UK
-        { location: [50.11, 8.68], size: 0.07 }, // Europe (Frankfurt)
-        { location: [20.59, 78.96], size: 0.09 }, // India
-      ],
-      onRender(state) {
-        if (!isDragging.current) phi.current += 0.004;
-        state.phi = phi.current + extraPhi.current;
-        const size = container.offsetHeight * DPR;
-        state.width = size;
-        state.height = size;
-      },
+    const DPR = window.devicePixelRatio || 1;
+
+    // Fresh canvas each run — avoids stale WebGL context from StrictMode remounts
+    const canvas = document.createElement("canvas");
+    canvas.style.cssText =
+      "position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:auto;aspect-ratio:1/1;pointer-events:none;";
+    container.appendChild(canvas);
+
+    let globe: ReturnType<typeof createGlobe> | null = null;
+
+    const init = (size: number) => {
+      const px = Math.round(size * DPR);
+      canvas.width = px;
+      canvas.height = px;
+      globe = createGlobe(canvas, {
+        devicePixelRatio: DPR,
+        width: px,
+        height: px,
+        phi: phi.current,
+        theta: 0.22,
+        dark: 1,
+        diffuse: 1.2,
+        mapSamples: 20000,
+        mapBrightness: 6,
+        baseColor: [0.05, 0.05, 0.13],
+        markerColor: [0.25, 0.55, 1.0],
+        glowColor: [0.12, 0.28, 0.65],
+        markers: [
+          { location: [37.09, -95.71], size: 0.08 }, // USA
+          { location: [51.51, -0.13], size: 0.08 }, // UK
+          { location: [50.11, 8.68], size: 0.07 }, // Europe (Frankfurt)
+          { location: [20.59, 78.96], size: 0.09 }, // India
+        ],
+        onRender(state) {
+          if (!isDragging.current) phi.current += 0.004;
+          state.phi = phi.current;
+          // Read from canvas attributes — avoids a layout-thrashing offsetHeight call per frame
+          state.width = canvas.width;
+          state.height = canvas.height;
+        },
+      });
+    };
+
+    // ResizeObserver drives both initial sizing and live resize — no RAF needed
+    const ro = new ResizeObserver((entries) => {
+      const h = entries[0]?.contentRect.height ?? 0;
+      if (!h) return;
+      const px = Math.round(h * DPR);
+      if (!globe) {
+        init(h);
+      } else {
+        canvas.width = px;
+        canvas.height = px;
+      }
     });
+    ro.observe(container);
 
-    return () => globe.destroy();
+    return () => {
+      ro.disconnect();
+      globe?.destroy();
+      canvas.remove();
+    };
   }, []);
 
   return (
@@ -64,7 +93,7 @@ function GlobeTile() {
       }}
       onMouseMove={(e) => {
         if (!isDragging.current) return;
-        extraPhi.current += (e.clientX - lastX.current) / 280;
+        phi.current += (e.clientX - lastX.current) / 280;
         lastX.current = e.clientX;
       }}
       onMouseUp={() => {
@@ -76,13 +105,6 @@ function GlobeTile() {
     >
       {/* background gradient */}
       <div className="absolute inset-0 bg-linear-to-b from-blue-950/30 via-transparent to-[#07080f] pointer-events-none z-1" />
-
-      {/* Canvas sized to container height (square), centered horizontally */}
-      <canvas
-        ref={canvasRef}
-        className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
-        style={{ height: "100%", width: "auto", aspectRatio: "1 / 1" }}
-      />
 
       {/* bottom overlay */}
       <div className="relative z-2 p-6">

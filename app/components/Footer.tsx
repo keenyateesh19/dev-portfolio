@@ -43,7 +43,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative mt-24 border-t border-white/10 glass w-screen!">
+    <footer className="relative p-0! border-t border-white/10 glass w-screen!">
       {/* Subtle top glow */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-400/40 to-transparent" />
 
