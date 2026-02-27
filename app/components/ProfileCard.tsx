@@ -226,6 +226,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
   const handlePointerMove = useCallback(
     (event: PointerEvent): void => {
+      // Ignore touch pointers — let the browser handle scroll natively
+      if (event.pointerType === "touch") return;
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
       const { x, y } = getOffsets(event, shell);
@@ -236,6 +238,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
   const handlePointerEnter = useCallback(
     (event: PointerEvent): void => {
+      if (event.pointerType === "touch") return;
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
 
@@ -252,25 +255,29 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     [tiltEngine],
   );
 
-  const handlePointerLeave = useCallback((): void => {
-    const shell = shellRef.current;
-    if (!shell || !tiltEngine) return;
+  const handlePointerLeave = useCallback(
+    (event: PointerEvent): void => {
+      if (event.pointerType === "touch") return;
+      const shell = shellRef.current;
+      if (!shell || !tiltEngine) return;
 
-    tiltEngine.toCenter();
+      tiltEngine.toCenter();
 
-    const checkSettle = (): void => {
-      const { x, y, tx, ty } = tiltEngine.getCurrent();
-      const settled = Math.hypot(tx - x, ty - y) < 0.6;
-      if (settled) {
-        shell.classList.remove("active");
-        leaveRafRef.current = null;
-      } else {
-        leaveRafRef.current = requestAnimationFrame(checkSettle);
-      }
-    };
-    if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
-    leaveRafRef.current = requestAnimationFrame(checkSettle);
-  }, [tiltEngine]);
+      const checkSettle = (): void => {
+        const { x, y, tx, ty } = tiltEngine.getCurrent();
+        const settled = Math.hypot(tx - x, ty - y) < 0.6;
+        if (settled) {
+          shell.classList.remove("active");
+          leaveRafRef.current = null;
+        } else {
+          leaveRafRef.current = requestAnimationFrame(checkSettle);
+        }
+      };
+      if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
+      leaveRafRef.current = requestAnimationFrame(checkSettle);
+    },
+    [tiltEngine],
+  );
 
   const handleDeviceOrientation = useCallback(
     (event: DeviceOrientationEvent): void => {
@@ -310,9 +317,15 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     const pointerLeaveHandler = handlePointerLeave as EventListener;
     const deviceOrientationHandler = handleDeviceOrientation as EventListener;
 
-    shell.addEventListener("pointerenter", pointerEnterHandler);
-    shell.addEventListener("pointermove", pointerMoveHandler);
-    shell.addEventListener("pointerleave", pointerLeaveHandler);
+    shell.addEventListener("pointerenter", pointerEnterHandler, {
+      passive: true,
+    });
+    shell.addEventListener("pointermove", pointerMoveHandler, {
+      passive: true,
+    });
+    shell.addEventListener("pointerleave", pointerLeaveHandler, {
+      passive: true,
+    });
 
     const handleClick = (): void => {
       if (!enableMobileTilt || location.protocol !== "https:") return;
@@ -431,7 +444,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   return (
     <div
       ref={wrapRef}
-      className={`relative touch-none ${className}`.trim()}
+      className={`relative ${className}`.trim()}
       style={
         {
           perspective: "500px",
@@ -607,14 +620,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 className="w-full absolute flex flex-col"
                 style={{ top: "1em", display: "flex", gridArea: "auto" }}
               >
-                <h2
-                  className="font-semibold m-0"
-                >
-                  {name}
-                </h2>
-                <p
-                  className="font-semibold font-display whitespace-nowrap mx-auto w-min shadow-2xl"
-                >
+                <h2 className="font-semibold m-0">{name}</h2>
+                <p className="font-semibold font-display whitespace-nowrap mx-auto w-min shadow-2xl">
                   {title}
                 </p>
               </div>
