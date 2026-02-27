@@ -1,9 +1,11 @@
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import type { Route } from "./+types/details";
 import type { Project } from "~/types";
-import { Link } from "react-router";
 import { motion } from "framer-motion";
-import PageBackground from "~/components/PageBackground";
+import BackLink from "~/components/BackLink";
+import SectionHeading from "~/components/ui/SectionHeading";
+import { formatDate } from "~/lib/utils";
+import { fadeInUp, fadeInRight, scaleIn } from "~/lib/motion";
 
 export async function clientLoader({
   request,
@@ -21,8 +23,7 @@ export function HydrateFallback() {
     <div className="min-h-screen flex items-center justify-center">
       <motion.div
         className="glass px-10 py-6 text-gray-300 text-sm"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
+        {...scaleIn}
       >
         Loading project...
       </motion.div>
@@ -32,36 +33,17 @@ export function HydrateFallback() {
 
 const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
   const project = loaderData;
-  const date = new Date(project.date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const date = formatDate(project.date);
 
   return (
-    <section className="min-h-screen px-4 py-20 relative overflow-hidden">
-
+    <section className="page-section">
       <div className="max-w-5xl mx-auto relative z-10 pt-16">
-        {/* Back link */}
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-10 group"
-          >
-            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-            Back to Projects
-          </Link>
-        </motion.div>
+        <BackLink to="/projects" label="Back to Projects" />
 
         {/* Hero Image */}
         <motion.div
           className="relative overflow-hidden rounded glass mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          {...fadeInUp}
           transition={{ duration: 0.6 }}
         >
           <img
@@ -75,8 +57,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
         {/* Title */}
         <motion.h1
           className="font-display text-white mb-8 leading-tight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          {...fadeInUp}
           transition={{ delay: 0.1, duration: 0.6 }}
         >
           {project.title}
@@ -88,14 +69,10 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
           <div className="md:col-span-2 flex flex-col gap-8">
             {/* Description */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              {...fadeInUp}
               transition={{ delay: 0.15, duration: 0.6 }}
             >
-              <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <span className="w-1 h-5 bg-blue-500 rounded-full inline-block" />
-                Overview
-              </h2>
+              <SectionHeading>Overview</SectionHeading>
               <p className="text-gray-300 leading-relaxed">
                 {project.description}
               </p>
@@ -104,14 +81,10 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
             {/* Key Features */}
             {project.keyFeatures && project.keyFeatures.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                {...fadeInUp}
                 transition={{ delay: 0.22, duration: 0.6 }}
               >
-                <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <span className="w-1 h-5 bg-purple-500 rounded-full inline-block" />
-                  Key Features
-                </h2>
+                <SectionHeading color="purple">Key Features</SectionHeading>
                 <ul className="grid sm:grid-cols-2 gap-2">
                   {project.keyFeatures.map((feature, i) => (
                     <motion.li
@@ -132,14 +105,10 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
             {/* Challenges */}
             {project.challenges && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                {...fadeInUp}
                 transition={{ delay: 0.3, duration: 0.6 }}
               >
-                <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <span className="w-1 h-5 bg-orange-500 rounded-full inline-block" />
-                  Challenges
-                </h2>
+                <SectionHeading color="orange">Challenges</SectionHeading>
                 <div className="glass-transparent px-5 py-4 text-gray-300 text-sm leading-relaxed border-l-2 border-orange-500/40">
                   {project.challenges}
                 </div>
@@ -149,14 +118,10 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
             {/* Learnings */}
             {project.learnings && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                {...fadeInUp}
                 transition={{ delay: 0.36, duration: 0.6 }}
               >
-                <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <span className="w-1 h-5 bg-green-500 rounded-full inline-block" />
-                  Learnings
-                </h2>
+                <SectionHeading color="green">Learnings</SectionHeading>
                 <div className="glass-transparent px-5 py-4 text-gray-300 text-sm leading-relaxed border-l-2 border-green-500/40">
                   {project.learnings}
                 </div>
@@ -167,8 +132,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
           {/* Sidebar — right col */}
           <motion.div
             className="flex flex-col gap-5"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            {...fadeInRight}
             transition={{ delay: 0.25, duration: 0.6 }}
           >
             {/* Meta */}

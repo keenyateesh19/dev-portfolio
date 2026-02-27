@@ -21,7 +21,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     <>
       <Hero />
       <section className="py-12">
-        <BioSection ctaHref="/about#experience" ctaLabel="See my experience" />
+        <BioSection
+          ctaHref="/about#experience"
+          ctaLabel="See my experience"
+          headingAs="h2"
+        />
       </section>
       <FeaturedProjects projects={featuredProjects} />
       <BentoSection />

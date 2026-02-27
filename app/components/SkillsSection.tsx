@@ -1,5 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
+import Button from "~/components/ui/Button";
 
 const devLogos = [
   { name: "HTML5", file: "html5-default.svg" },
@@ -75,12 +76,12 @@ const SkillsSection = () => {
       <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block">
         My Skills
       </span>
-      <h3 className="font-display mb-10">
+      <h2 className="font-display mb-10">
         The Special{" "}
         <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
           Ingredients
         </span>
-      </h3>
+      </h2>
 
       {/* Grid wrapper — clipped when collapsed */}
       <div className="relative">
@@ -134,10 +135,7 @@ const SkillsSection = () => {
 
       {/* See more / See less */}
       <div className="mt-6 flex justify-center">
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="btn-primary flex gap-3"
-        >
+        <Button onClick={() => setExpanded((v) => !v)} className="flex gap-3">
           {expanded ? "See less" : "See more"}
           <motion.span
             animate={{ rotate: expanded ? 180 : 0 }}
@@ -146,7 +144,7 @@ const SkillsSection = () => {
           >
             ↓
           </motion.span>
-        </button>
+        </Button>
       </div>
     </section>
   );

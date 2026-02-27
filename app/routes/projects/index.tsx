@@ -4,12 +4,13 @@ import type { Project } from "~/types";
 import { useState } from "react";
 import Pagination from "~/components/Pagination";
 import { AnimatePresence, motion } from "framer-motion";
+import { containerVariants, itemVariants, EASE, scaleIn } from "~/lib/motion";
 
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
-  if(!res.ok) throw new Error("Failed to load projects...")
+  if (!res.ok) throw new Error("Failed to load projects...");
   const projects = await res.json();
 
   return { projects };
@@ -35,39 +36,15 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const indexOfFirst = indexOfLast - projectsPerPage;
   const currentProjects = filteredProjects.slice(indexOfFirst, indexOfLast);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.05,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 15,
-      },
-    },
-  };
-
   return (
-    <section className="min-h-screen py-20 px-4 relative overflow-hidden">
+    <section className="page-section">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <motion.div
           className="text-center mb-12 pt-20 pb-10"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: EASE }}
         >
           <h1 className="text-white mb-4 font-display">
             Curated{" "}
@@ -75,7 +52,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
               Projects
             </span>
           </h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className="page-subtitle mx-auto">
             A collection of my work spanning web development, design, and
             creative experiments. Each project represents a unique challenge and
             solution.
@@ -87,7 +64,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
           className="flex flex-wrap justify-center gap-3 mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
         >
           {categories.map((category, index) => (
             <motion.button
@@ -105,7 +82,11 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + index * 0.05 }}
+              transition={{
+                delay: 0.25 + index * 0.05,
+                duration: 0.4,
+                ease: EASE,
+              }}
             >
               {category}
             </motion.button>
@@ -132,11 +113,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
 
         {/* Empty State */}
         {currentProjects.length === 0 && (
-          <motion.div
-            className="glass text-center py-16 px-8"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
+          <motion.div className="glass text-center py-16 px-8" {...scaleIn}>
             <p className="text-gray-300 text-lg">
               No projects found in this category.
             </p>
@@ -148,7 +125,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.3, ease: EASE }}
           >
             <Pagination
               totalPages={totalPages}

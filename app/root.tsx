@@ -1,6 +1,5 @@
 import {
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
@@ -11,6 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import PageBackground from "./components/PageBackground";
+import Button from "~/components/ui/Button";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -110,9 +110,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         )}
 
         {/* CTA */}
-        <Link to="/" className="btn-primary mt-2">
+        <Button to="/" className="mt-2">
           ← Back to Home
-        </Link>
+        </Button>
       </div>
     </div>
   );
