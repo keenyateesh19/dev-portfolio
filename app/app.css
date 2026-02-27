@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans:
@@ -64,7 +65,7 @@ body {
 }
 
 @utility btn {
-  @apply px-4 py-2 font-[500] rounded grid place-items-center cursor-pointer;
+  @apply px-4 py-2 font-medium rounded grid place-items-center cursor-pointer;
 }
 
 @utility rise {
@@ -77,4 +78,39 @@ body {
 
 @utility btn-secondary {
   @apply bg-blue-100 hover:bg-white text-black btn rise border;
+}
+
+@utility page-section {
+  @apply min-h-screen px-4 py-20 relative overflow-hidden;
+}
+
+@utility eyebrow {
+  @apply glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-4 inline-block;
+}
+
+@utility page-subtitle {
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  @apply text-zinc-400 leading-relaxed max-w-2xl;
+}
+
+@utility gradient-divider {
+  @apply h-px w-full bg-linear-to-r from-transparent via-blue-500/30 to-transparent;
+}
+
+@utility prose-content {
+  @apply prose prose-invert max-w-none
+    prose-headings:font-display prose-headings:text-white prose-headings:tracking-tight
+    prose-p:text-zinc-300 prose-p:leading-relaxed
+    prose-a:text-blue-400 prose-a:no-underline
+    prose-strong:text-white
+    prose-code:text-blue-300 prose-code:bg-white/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-none prose-code:after:content-none
+    prose-pre:glass prose-pre:text-sm
+    prose-blockquote:border-l-blue-500/50 prose-blockquote:text-zinc-400 prose-blockquote:not-italic
+    prose-hr:border-white/10
+    prose-li:text-zinc-300
+    prose-ul:marker:text-blue-500/70 prose-ol:marker:text-blue-500/70;
+
+  & a:hover {
+    @apply text-blue-300 underline;
+  }
 }

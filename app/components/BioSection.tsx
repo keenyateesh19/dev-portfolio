@@ -1,28 +1,20 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { FaEnvelope, FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { Link } from "react-router";
 import ProfileCard from "~/components/ProfileCard";
-
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: EASE, delay },
-  }),
-};
+import Button from "~/components/ui/Button";
+import { fadeUpVariants } from "~/lib/motion";
 
 interface BioSectionProps {
   ctaHref?: string;
   ctaLabel?: string;
+  headingAs?: "h1" | "h2";
 }
 
 const BioSection = ({
   ctaHref,
   ctaLabel = "See my experience",
+  headingAs: Heading = "h1",
 }: BioSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -34,35 +26,37 @@ const BioSection = ({
     >
       {/* Bio + Card */}
       <motion.div
-        variants={fadeUp}
+        variants={fadeUpVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
         custom={0}
       >
         <motion.span
           className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-4 inline-block"
-          variants={fadeUp}
+          variants={fadeUpVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={0.05}
         >
           More about me
         </motion.span>
-        <motion.h1
+        <motion.div
           className="font-display mb-4"
-          variants={fadeUp}
+          variants={fadeUpVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={0.15}
         >
-          Adrenaline Fueled.{" "}
-          <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Impact Driven.
-          </span>
-        </motion.h1>
+          <Heading className="font-display mb-0">
+            Adrenaline Fueled.{" "}
+            <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Impact Driven.
+            </span>
+          </Heading>
+        </motion.div>
         <motion.div
           className="text-zinc-400"
-          variants={fadeUp}
+          variants={fadeUpVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={0.25}
@@ -87,7 +81,7 @@ const BioSection = ({
         </motion.div>
         <motion.div
           className="flex items-center gap-6 md:gap-8 flex-wrap"
-          variants={fadeUp}
+          variants={fadeUpVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={0.35}
@@ -107,19 +101,19 @@ const BioSection = ({
         </motion.div>
         {ctaHref && (
           <motion.div
-            variants={fadeUp}
+            variants={fadeUpVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
             custom={0.45}
           >
-            <Link to={ctaHref} className="btn-primary float-left mt-6 md:mt-8">
+            <Button to={ctaHref} className="float-left mt-6 md:mt-8">
               {ctaLabel} →
-            </Link>
+            </Button>
           </motion.div>
         )}
       </motion.div>
       <motion.div
-        variants={fadeUp}
+        variants={fadeUpVariants}
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
         custom={0.2}

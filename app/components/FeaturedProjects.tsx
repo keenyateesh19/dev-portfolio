@@ -1,24 +1,16 @@
 import { Link } from "react-router";
 import { motion } from "framer-motion";
+import Button from "~/components/ui/Button";
 import type { Project } from "~/types";
 import ProjectCard from "./ProjectCard";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring" as const, stiffness: 90, damping: 15 },
-  },
-};
+import Eyebrow from "~/components/ui/Eyebrow";
+import {
+  EASE,
+  VIEW,
+  containerVariants,
+  itemVariants,
+  viewFadeInUp,
+} from "~/lib/motion";
 
 const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
   if (!projects.length) return null;
@@ -31,14 +23,10 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
         {/* Header */}
         <motion.div
           className="mb-12"
-          initial={{ opacity: 0, y: -16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          {...viewFadeInUp}
+          transition={{ duration: 0.5, ease: EASE }}
         >
-          <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-4 inline-block">
-            Selected work
-          </span>
+          <Eyebrow>Selected work</Eyebrow>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <h2 className="font-display text-white">
               Featured{" "}
@@ -68,7 +56,7 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={VIEW}
         >
           {/* Primary featured card — spans 2 cols on large screens */}
           <motion.div className="lg:col-span-2" variants={itemVariants}>
@@ -92,14 +80,12 @@ const FeaturedProjects = ({ projects }: { projects: Project[] }) => {
         {/* Bottom CTA */}
         <motion.div
           className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+          {...viewFadeInUp}
+          transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
         >
-          <Link to="/projects" className="btn-primary inline-flex">
+          <Button to="/projects" className="inline-flex">
             Explore all projects →
-          </Link>
+          </Button>
         </motion.div>
       </div>
     </section>

@@ -189,12 +189,12 @@ function ContactTile() {
             Let&apos;s connect
           </span>
         </div>
-        <h3 className="font-semibold text-xl leading-snug">
+        <p className="font-semibold text-xl leading-snug">
           <span className="text-white">Let&apos;s take the first step to</span>{" "}
           <span className="bg-linear-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
             bring your ideas to life
           </span>
-        </h3>
+        </p>
       </div>
 
       <div className="relative z-10 mt-2">
@@ -259,9 +259,9 @@ function BehindScenesTile() {
           </span>
         </div>
 
-        <h3 className="text-white font-semibold text-base mb-4">
+        <p className="text-white font-semibold text-base mb-4">
           Currently building
-        </h3>
+        </p>
 
         <div className="flex items-start gap-3 px-3.5 py-3 rounded-xl bg-purple-500/10 border border-purple-400/20">
           <FaHeartCircleCheck className="text-purple-400 mt-0.5 shrink-0" />
