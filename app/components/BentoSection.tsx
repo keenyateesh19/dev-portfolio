@@ -4,6 +4,7 @@ import createGlobe from "cobe";
 import confetti from "canvas-confetti";
 import { FaCopy, FaCheck, FaEnvelope } from "react-icons/fa";
 import { FaHeartCircleCheck } from "react-icons/fa6";
+import Eyebrow from "~/components/ui/Eyebrow";
 
 const EMAIL = "reachme@yateesh.tech";
 
@@ -86,7 +87,7 @@ function GlobeTile() {
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-col justify-end h-full overflow-hidden rounded-2xl border border-white/10 bg-[#07080f] cursor-grab active:cursor-grabbing select-none"
+      className="relative flex flex-col justify-end h-full overflow-hidden rounded border border-white/10 bg-[#07080f] cursor-grab active:cursor-grabbing select-none"
       onMouseDown={(e) => {
         isDragging.current = true;
         lastX.current = e.clientX;
@@ -174,7 +175,7 @@ function ContactTile() {
   };
 
   return (
-    <div className="relative flex flex-col justify-between h-full rounded-2xl glass border border-white/10 p-6 overflow-hidden">
+    <div className="relative flex flex-col justify-between h-full rounded glass border border-white/10 p-6 overflow-hidden">
       {/* Decorative blobs */}
       <div className="absolute -top-8 -right-8 w-40 h-40 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -201,7 +202,7 @@ function ContactTile() {
         <button
           ref={btnRef}
           onClick={handleCopy}
-          className={`group relative w-full flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all duration-300 overflow-hidden
+          className={`group relative w-full flex items-center gap-3 px-4 py-3.5 rounded border transition-all duration-300 overflow-hidden
             ${
               copied
                 ? "bg-green-500/10 border-green-400/40 text-green-300"
@@ -212,7 +213,7 @@ function ContactTile() {
           <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/5 to-transparent" />
 
           <span
-            className={`shrink-0 p-2 rounded-lg transition-colors duration-300 ${copied ? "bg-green-500/20" : "bg-blue-500/15 group-hover:bg-blue-500/25"}`}
+            className={`shrink-0 p-2 rounded transition-colors duration-300 ${copied ? "bg-green-500/20" : "bg-blue-500/15 group-hover:bg-blue-500/25"}`}
           >
             {copied ? (
               <FaCheck className="text-green-400 text-sm" />
@@ -243,7 +244,7 @@ function ContactTile() {
 
 function BehindScenesTile() {
   return (
-    <div className="relative flex flex-col justify-between h-full rounded-2xl glass border border-white/10 p-6 overflow-hidden">
+    <div className="relative flex flex-col justify-between h-full rounded glass border border-white/10 p-6 overflow-hidden">
       {/* decorative blobs */}
       <div className="absolute -top-10 -right-10 w-36 h-36 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-10 -left-10 w-28 h-28 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -263,7 +264,7 @@ function BehindScenesTile() {
           Currently building
         </p>
 
-        <div className="flex items-start gap-3 px-3.5 py-3 rounded-xl bg-purple-500/10 border border-purple-400/20">
+        <div className="flex items-start gap-3 px-3.5 py-3 rounded bg-purple-500/10 border border-purple-400/20">
           <FaHeartCircleCheck className="text-purple-400 mt-0.5 shrink-0" />
           <div>
             <p className="text-white text-sm font-medium">Life OS</p>
@@ -297,50 +298,58 @@ const BentoSection = () => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-12">
-      <motion.span
-        className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block"
-        variants={fadeUp}
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-        custom={0}
-      >
-        Quick look
-      </motion.span>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 md:h-120">
-        {/* Globe — spans 2 rows on desktop */}
+    <section ref={ref} className="relative py-12 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
         <motion.div
-          className="min-h-85 md:min-h-0 md:col-span-2 md:row-span-2 md:h-full"
           variants={fadeUp}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          custom={0.1}
+          custom={0}
+          className="mb-10"
         >
-          <GlobeTile />
+          <Eyebrow className="mb-4">Quick look</Eyebrow>
+          <h2 className="font-display text-white">
+            At a{" "}
+            <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Glance
+            </span>
+          </h2>
         </motion.div>
 
-        {/* Contact */}
-        <motion.div
-          className="md:h-full"
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          custom={0.25}
-        >
-          <ContactTile />
-        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 md:h-120">
+          {/* Globe — spans 2 rows on desktop */}
+          <motion.div
+            className="min-h-85 md:min-h-0 md:col-span-2 md:row-span-2 md:h-full"
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            custom={0.1}
+          >
+            <GlobeTile />
+          </motion.div>
 
-        {/* Behind the scenes */}
-        <motion.div
-          className="md:h-full"
-          variants={fadeUp}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          custom={0.4}
-        >
-          <BehindScenesTile />
-        </motion.div>
+          {/* Contact */}
+          <motion.div
+            className="md:h-full"
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            custom={0.25}
+          >
+            <ContactTile />
+          </motion.div>
+
+          {/* Behind the scenes */}
+          <motion.div
+            className="md:h-full"
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            custom={0.4}
+          >
+            <BehindScenesTile />
+          </motion.div>
+        </div>
       </div>
     </section>
   );

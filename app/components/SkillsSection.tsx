@@ -1,6 +1,8 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import Button from "~/components/ui/Button";
+import Eyebrow from "~/components/ui/Eyebrow";
+import { viewFadeInUp, EASE } from "~/lib/motion";
 
 const devLogos = [
   { name: "HTML5", file: "html5-default.svg" },
@@ -72,79 +74,85 @@ const SkillsSection = () => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <section ref={skillsRef} className="py-12">
-      <span className="glass px-3 py-1 text-xs font-mono tracking-widest text-zinc-400 uppercase mb-6 inline-block">
-        My Skills
-      </span>
-      <h2 className="font-display mb-10">
-        The Special{" "}
-        <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-          Ingredients
-        </span>
-      </h2>
-
-      {/* Grid wrapper — clipped when collapsed */}
-      <div className="relative">
+    <section ref={skillsRef} className="relative py-12 px-4 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
         <motion.div
-          animate={{ maxHeight: expanded ? 2000 : 300 }}
-          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-          className="overflow-hidden"
+          className="mb-10"
+          {...viewFadeInUp}
+          transition={{ duration: 0.5, ease: EASE }}
         >
-          <motion.div
-            className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3"
-            variants={container}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-          >
-            {devLogos.map(({ name, file }) => (
-              <motion.div
-                key={name}
-                variants={item}
-                className="group flex flex-col items-center justify-center aspect-square glass rounded-xl p-2.5 hover:bg-white/15 transition-colors cursor-default"
-                title={name}
-              >
-                <img
-                  src={`/dev-logos/${file}`}
-                  alt={name}
-                  className="w-8 h-8 object-contain group-hover:scale-110 transition-transform duration-200"
-                  loading="lazy"
-                  draggable={false}
-                />
-                <span className="mt-1.5 text-[9px] text-zinc-500 group-hover:text-zinc-300 transition-colors text-center leading-tight truncate w-full">
-                  {name}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
+          <Eyebrow className="mb-4">My Skills</Eyebrow>
+          <h2 className="font-display">
+            The Special{" "}
+            <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Ingredients
+            </span>
+          </h2>
         </motion.div>
 
-        {/* Gradient fade — only visible when collapsed */}
-        <AnimatePresence>
-          {!expanded && (
-            <motion.div
-              key="gradient"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-gray-950 via-gray-950/80 to-transparent pointer-events-none"
-            />
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* See more / See less */}
-      <div className="mt-6 flex justify-center">
-        <Button onClick={() => setExpanded((v) => !v)} className="flex gap-3">
-          {expanded ? "See less" : "See more"}
-          <motion.span
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="inline-block"
+        {/* Grid wrapper — clipped when collapsed */}
+        <div className="relative">
+          <motion.div
+            animate={{ maxHeight: expanded ? 2000 : 300 }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className="overflow-hidden"
           >
-            ↓
-          </motion.span>
-        </Button>
+            <motion.div
+              className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3"
+              variants={container}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+            >
+              {devLogos.map(({ name, file }) => (
+                <motion.div
+                  key={name}
+                  variants={item}
+                  className="group flex flex-col items-center justify-center aspect-square glass rounded p-2.5 hover:bg-white/15 transition-colors cursor-default"
+                  title={name}
+                >
+                  <img
+                    src={`/dev-logos/${file}`}
+                    alt={name}
+                    className="w-8 h-8 object-contain group-hover:scale-110 transition-transform duration-200"
+                    loading="lazy"
+                    draggable={false}
+                  />
+                  <span className="mt-1.5 text-[9px] text-zinc-500 group-hover:text-zinc-300 transition-colors text-center leading-tight truncate w-full">
+                    {name}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* Gradient fade — only visible when collapsed */}
+          <AnimatePresence>
+            {!expanded && (
+              <motion.div
+                key="gradient"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-gray-950 via-gray-950/80 to-transparent pointer-events-none"
+              />
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* See more / See less */}
+        <div className="mt-6 flex justify-center">
+          <Button onClick={() => setExpanded((v) => !v)} className="flex gap-3">
+            {expanded ? "See less" : "See more"}
+            <motion.span
+              animate={{ rotate: expanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="inline-block"
+            >
+              ↓
+            </motion.span>
+          </Button>
+        </div>
       </div>
     </section>
   );

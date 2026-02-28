@@ -41,7 +41,7 @@ const Hero = () => {
         ) : (
           <LetterGlitch
             glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
-            glitchSpeed={100}
+            glitchSpeed={20}
             centerVignette={true}
             characters="ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಚಜಟಡತದನಪಬಮಯರಲವಶಸಹಳ೦೧೨೩೪೫೬೭೮೯ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*()-_+=/[]{};:<>.,"
           />
@@ -103,11 +103,7 @@ const Hero = () => {
             </Button>
           </motion.span>
           <motion.span variants={heroCTAItemVariants}>
-            <Button
-              href="mailto:reachme@yateesh.tech"
-              variant="secondary"
-              className="w-full"
-            >
+            <Button href="#cta" variant="secondary" className="w-full">
               Get In Touch
             </Button>
           </motion.span>
@@ -125,7 +121,7 @@ const Hero = () => {
         }
         transition={
           reducedMotion
-            ? { duration: 2}
+            ? { duration: 2 }
             : { duration: 2, repeat: Infinity, ease: "easeInOut" }
         }
       >

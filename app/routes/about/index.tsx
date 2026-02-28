@@ -1,10 +1,18 @@
-import { useNavigate } from "react-router";
 import BioSection from "~/components/BioSection";
 import ExperienceCard from "~/components/ExperienceCard";
 import SkillsSection from "~/components/SkillsSection";
+import AboutCTA from "~/components/AboutCTA";
 import type { Experience } from "~/types";
 import type { Route } from "./+types/index";
 import Eyebrow from "~/components/ui/Eyebrow";
+import { motion } from "framer-motion";
+import {
+  EASE,
+  VIEW,
+  viewFadeInUp,
+  containerVariants,
+  itemVariants,
+} from "~/lib/motion";
 
 export async function loader({
   request,
@@ -19,31 +27,53 @@ export async function loader({
 }
 
 const AboutPage = ({ loaderData }: Route.ComponentProps) => {
-  let navigate = useNavigate();
   const { experiences } = loaderData;
 
   return (
     <>
-      <section className="mt-35">
-        <BioSection />
+      <section className="relative pt-20 md:pt-28 pb-12 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <BioSection />
+        </div>
       </section>
       {/* Experience */}
-      <section id="experience" className="my-16">
-        <Eyebrow>Experience</Eyebrow>
-        <h2 className="font-display mb-6">
-          Experiences that{" "}
-          <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Shaped me
-          </span>
-        </h2>
-        <div className="flex flex-col gap-4">
-          {experiences.map((exp) => (
-            <ExperienceCard key={`${exp.company}-${exp.startDate}`} {...exp} />
-          ))}
+      <section id="experience" className="relative py-12 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            className="mb-8"
+            {...viewFadeInUp}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <Eyebrow className="mb-4">Experience</Eyebrow>
+            <h2 className="font-display">
+              Experiences that{" "}
+              <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                Shaped me
+              </span>
+            </h2>
+          </motion.div>
+          <motion.div
+            className="flex flex-col gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEW}
+          >
+            {experiences.map((exp) => (
+              <motion.div
+                key={`${exp.company}-${exp.startDate}`}
+                variants={itemVariants}
+              >
+                <ExperienceCard {...exp} />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
       {/* Skills */}
       <SkillsSection />
+      {/* CTA */}
+      <AboutCTA />
     </>
   );
 };

@@ -4,7 +4,7 @@ import type { Route } from "./+types/index";
 import { motion } from "framer-motion";
 import BlogCard from "~/components/BlogCard";
 import PostFilter from "~/components/PostFilter";
-import { containerVariants, itemVariants, EASE } from "~/lib/motion";
+import { containerVariants, itemVariants, EASE, fadeInUp } from "~/lib/motion";
 import Pagination from "~/components/Pagination";
 
 export async function loader({
@@ -46,15 +46,10 @@ const BlogsPage = ({ loaderData }: Route.ComponentProps) => {
     <div className="pb-20">
       {/* ── Hero ── */}
       <div className="relative pt-20 md:pt-28 pb-10 md:pb-14 overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="pointer-events-none absolute -top-20 -left-20 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -right-20 w-80 h-80 rounded-full bg-purple-500/10 blur-3xl" />
-
         <div className="relative z-10 max-w-3xl">
           <motion.span
             className="eyebrow"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             transition={{ duration: 0.5, ease: EASE }}
           >
             Writing
@@ -62,8 +57,7 @@ const BlogsPage = ({ loaderData }: Route.ComponentProps) => {
 
           <motion.h1
             className="font-display leading-tight mb-5"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
           >
             <span className="text-white">Notes from </span>
@@ -74,8 +68,7 @@ const BlogsPage = ({ loaderData }: Route.ComponentProps) => {
 
           <motion.p
             className="page-subtitle"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...fadeInUp}
             transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
           >
             Thoughts on building digital experiences, solving problems, and

@@ -4,7 +4,13 @@ import type { Project } from "~/types";
 import { useState } from "react";
 import Pagination from "~/components/Pagination";
 import { AnimatePresence, motion } from "framer-motion";
-import { containerVariants, itemVariants, EASE, scaleIn } from "~/lib/motion";
+import {
+  containerVariants,
+  itemVariants,
+  EASE,
+  scaleIn,
+  fadeInUp,
+} from "~/lib/motion";
 
 export async function loader({
   request,
@@ -41,9 +47,8 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <motion.div
-          className="text-center mb-12 pt-20 pb-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12 pt-24 md:pt-28 pb-10"
+          {...fadeInUp}
           transition={{ duration: 0.6, ease: EASE }}
         >
           <h1 className="text-white mb-4 font-display">
@@ -62,8 +67,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
         {/* Category Filter Pills */}
         <motion.div
           className="flex flex-wrap justify-center gap-3 mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          {...fadeInUp}
           transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
         >
           {categories.map((category, index) => (
@@ -80,8 +84,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              {...fadeInUp}
               transition={{
                 delay: 0.25 + index * 0.05,
                 duration: 0.4,
@@ -122,11 +125,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, ease: EASE }}
-          >
+          <motion.div {...fadeInUp} transition={{ delay: 0.3, ease: EASE }}>
             <Pagination
               totalPages={totalPages}
               currentPage={currentPage}

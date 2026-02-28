@@ -18,7 +18,7 @@ const ExperienceCard = ({
   technologies,
 }: ExperienceCardProps) => {
   return (
-    <div className="glass p-5 rounded-2xl flex flex-col gap-4 rise transition-all duration-300">
+    <div className="glass p-5 rounded flex flex-col gap-4 rise transition-all duration-300">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
         <div>
