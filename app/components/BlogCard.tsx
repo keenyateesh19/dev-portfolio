@@ -16,7 +16,7 @@ const BlogCard = ({ post }: { post: PostMeta }) => {
       className="h-full"
     >
       <Link to={`/blogs/${post.slug}`} className="group block h-full">
-        <div className="relative glass rounded-2xl overflow-hidden h-full flex flex-col">
+        <div className="relative glass rounded overflow-hidden h-full flex flex-col">
           {/* Hover glow — sits behind content */}
           <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-radial-[ellipse_80%_50%_at_50%_0%] from-blue-500/10 to-transparent" />
 

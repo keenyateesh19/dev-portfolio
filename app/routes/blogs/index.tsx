@@ -1,8 +1,11 @@
+import { useState } from "react";
 import type { PostMeta } from "~/types";
 import type { Route } from "./+types/index";
 import { motion } from "framer-motion";
 import BlogCard from "~/components/BlogCard";
+import PostFilter from "~/components/PostFilter";
 import { containerVariants, itemVariants, EASE } from "~/lib/motion";
+import Pagination from "~/components/Pagination";
 
 export async function loader({
   request,
@@ -15,9 +18,32 @@ export async function loader({
 
 const BlogsPage = ({ loaderData }: Route.ComponentProps) => {
   const { postMeta } = loaderData;
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const filteredPosts = searchQuery.trim()
+    ? postMeta.filter((post) => {
+        const q = searchQuery.toLowerCase();
+        return (
+          post.title.toLowerCase().includes(q) ||
+          post.excerpt.toLowerCase().includes(q)
+        );
+      })
+    : postMeta;
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const postPerPage = 6;
+  const totalPages = Math.ceil(filteredPosts.length / postPerPage);
+  const indexOfLast = currentPage * postPerPage;
+  const indexOfFirst = indexOfLast - postPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirst, indexOfLast);
 
   return (
-    <>
+    <div className="pb-20">
       {/* ── Hero ── */}
       <div className="relative pt-20 md:pt-28 pb-10 md:pb-14 overflow-hidden">
         {/* Decorative blobs */}
@@ -66,30 +92,49 @@ const BlogsPage = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </div>
 
-      {/* ── Posts grid ── */}
-      {postMeta.length === 0 ? (
+      {/* ── Search + Posts grid ── */}
+      <PostFilter
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        totalResults={filteredPosts.length}
+        totalPosts={postMeta.length}
+      />
+
+      {currentPosts.length === 0 ? (
         <p className="text-zinc-500 text-sm pb-20">
-          No posts yet — check back soon.
+          {searchQuery.trim()
+            ? `No posts matched "${searchQuery}" — try a different term.`
+            : "No posts yet — check back soon."}
         </p>
       ) : (
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-24"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {postMeta.map((post) => (
-            <motion.div
-              key={post.slug}
-              variants={itemVariants}
-              className="h-full"
-            >
-              <BlogCard post={post} />
-            </motion.div>
-          ))}
-        </motion.div>
+        <>
+          <motion.div
+            key={`${searchQuery}-${currentPage}`}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pb-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {currentPosts.map((post) => (
+              <motion.div
+                key={post.slug}
+                variants={itemVariants}
+                className="h-full"
+              >
+                <BlogCard post={post} />
+              </motion.div>
+            ))}
+          </motion.div>
+          {totalPages > 1 && (
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </>
       )}
-    </>
+    </div>
   );
 };
 
