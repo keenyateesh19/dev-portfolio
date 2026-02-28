@@ -1,6 +1,12 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCopy, FaCheck, FaEnvelope, FaPaperPlane } from "react-icons/fa";
+import {
+  FaCopy,
+  FaCheck,
+  FaEnvelope,
+  FaPaperPlane,
+  FaTimes,
+} from "react-icons/fa";
 import confetti from "canvas-confetti";
 import { EASE, viewFadeInUp } from "~/lib/motion";
 
@@ -224,7 +230,6 @@ const AboutCTA = () => {
 
   return (
     <section id="cta" className="relative py-24 px-4 overflow-hidden">
-
       {/* Top border accent */}
       <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
 
@@ -268,11 +273,39 @@ const AboutCTA = () => {
             {/* Toggle button */}
             <motion.button
               onClick={() => setFormOpen((v) => !v)}
-              className="btn-primary flex items-center justify-center gap-2 w-full"
+              className={`flex items-center justify-center gap-2 w-full transition-colors duration-200 ${
+                formOpen ? "btn-secondary" : "btn-primary"
+              }`}
               whileHover={{ y: -1 }}
+              layout
             >
-              <FaEnvelope className="text-xs" />
-              {formOpen ? "Close form" : "Get In Touch"}
+              <AnimatePresence mode="wait" initial={false}>
+                {formOpen ? (
+                  <motion.span
+                    key="close"
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <FaTimes className="text-xs" />
+                    Close
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="open"
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <FaEnvelope className="text-xs" />
+                    Get In Touch
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </motion.button>
 
             {/* Expandable form */}

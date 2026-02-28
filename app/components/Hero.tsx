@@ -1,4 +1,3 @@
-import LetterGlitch from "./LetterGlitch";
 import Button from "~/components/ui/Button";
 import { motion, useReducedMotion } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
@@ -8,6 +7,7 @@ import {
   heroCTAContainerVariants,
   heroCTAItemVariants,
 } from "~/lib/motion";
+import Prism from "./Prism";
 
 const pulseAnimation = {
   initial: { opacity: 0.25, scale: 1 },
@@ -33,22 +33,43 @@ const textExpandAnimation = {
 const Hero = () => {
   const reducedMotion = useReducedMotion();
 
+  // Skip the WebGL shader only on truly ancient/underpowered devices (≤ 2 cores).
+  // Mid-range phones (4–8 cores) still get the Prism — the component auto-applies
+  // mobile optimisations: DPR capped at 1, 40 shader steps, 30 fps frame throttle.
+  const isLowPower =
+    typeof navigator !== "undefined"
+      ? navigator.hardwareConcurrency <= 2
+      : false;
+
+  const skipPrism = reducedMotion || isLowPower;
+
   return (
     <header className="h-svh max-w-full! px-0! mx-auto relative">
-      <div className="absolute w-full h-svh z-0">
-        {reducedMotion ? (
+      <div className="absolute w-full h-svh z-0 bg-gray-950">
+        {skipPrism ? (
           <div className="w-full h-svh bg-gray-950" />
         ) : (
-          <LetterGlitch
-            glitchColors={["#06b6d4", "#3b82f6", "#9333ea"]}
-            glitchSpeed={200}
-            centerVignette={true}
-            characters="ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಚಜಟಡತದನಪಬಮಯರಲವಶಸಹಳ೦೧೨೩೪೫೬೭೮೯ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*()-_+=/[]{};:<>.,"
+          <Prism
+            animationType="3drotate"
+            timeScale={0.5}
+            height={2}
+            baseWidth={5}
+            scale={2}
+            hueShift={0.13}
+            colorFrequency={1}
+            noise={0}
+            glow={1}
+            bloom={0.85}
+            suspendWhenOffscreen={true}
+            shaderSteps={72}
           />
         )}
       </div>
 
-      <div className="h-screen absolute z-1 left-0 right-0 flex flex-col justify-center items-center text-center gap-4">
+      <div
+        className="h-screen absolute z-1 left-0 right-0 flex flex-col justify-center items-center text-center gap-4"
+        style={{ willChange: "transform" }}
+      >
         <motion.span
           className="glass px-4 flex justify-center items-center gap-3 font-thin text-sm"
           {...fadeInUp}
@@ -56,11 +77,11 @@ const Hero = () => {
         >
           <motion.span
             className="block bg-green-500 h-2 w-2 rounded-full"
-            {...(reducedMotion ? {} : pulseAnimation)}
+            {...(skipPrism ? {} : pulseAnimation)}
           />
           <motion.span
             className="text-nowrap overflow-hidden"
-            {...(reducedMotion ? {} : textExpandAnimation)}
+            {...(skipPrism ? {} : textExpandAnimation)}
           >
             Scanning for new challenges...
           </motion.span>
@@ -115,12 +136,12 @@ const Hero = () => {
         className="pointer-events-none absolute bottom-10 left-1/2 -translate-x-1/2 z-3 flex flex-col items-center gap-1 text-white/40"
         initial={{ opacity: 0, y: -4 }}
         animate={
-          reducedMotion
+          skipPrism
             ? { opacity: 1, y: 0 }
             : { opacity: [0.3, 1, 0.3], y: [0, 6, 0] }
         }
         transition={
-          reducedMotion
+          skipPrism
             ? { duration: 2 }
             : { duration: 2, repeat: Infinity, ease: "easeInOut" }
         }

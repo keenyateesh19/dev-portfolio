@@ -20,74 +20,75 @@ function GlobeTile() {
     const container = containerRef.current;
     if (!container) return;
 
-    const DPR = window.devicePixelRatio || 1;
+    // Cap DPR — retina adds cost without meaningful globe detail
+    const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 
     let globe: ReturnType<typeof createGlobe> | null = null;
-    let canvas: HTMLCanvasElement | null = null;
-    let ro: ResizeObserver | null = null;
 
-    const startGlobe = () => {
-      // Fresh canvas each run — avoids stale WebGL context from StrictMode remounts
-      canvas = document.createElement("canvas");
-      canvas.style.cssText =
-        "position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:auto;aspect-ratio:1/1;pointer-events:none;";
-      container.appendChild(canvas);
+    // Canvas is created once and reused across pause/resume cycles
+    const canvas = document.createElement("canvas");
+    canvas.style.cssText =
+      "position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:auto;aspect-ratio:1/1;pointer-events:none;";
+    container.appendChild(canvas);
 
-      const init = (size: number) => {
-        const px = Math.round(size * DPR);
-        canvas!.width = px;
-        canvas!.height = px;
-        globe = createGlobe(canvas!, {
-          devicePixelRatio: DPR,
-          width: px,
-          height: px,
-          phi: phi.current,
-          theta: 0.22,
-          dark: 1,
-          diffuse: 1.2,
-          mapSamples: 20000,
-          mapBrightness: 6,
-          baseColor: [0.05, 0.05, 0.13],
-          markerColor: [0.25, 0.55, 1.0],
-          glowColor: [0.12, 0.28, 0.65],
-          markers: [
-            { location: [37.09, -95.71], size: 0.08 }, // USA
-            { location: [51.51, -0.13], size: 0.08 }, // UK
-            { location: [50.11, 8.68], size: 0.07 }, // Europe (Frankfurt)
-            { location: [20.59, 78.96], size: 0.09 }, // India
-          ],
-          onRender(state) {
-            if (!isDragging.current) phi.current += 0.004;
-            state.phi = phi.current;
-            // Read from canvas attributes — avoids a layout-thrashing offsetHeight call per frame
-            state.width = canvas!.width;
-            state.height = canvas!.height;
-          },
-        });
-      };
-
-      // ResizeObserver drives both initial sizing and live resize — no RAF needed
-      ro = new ResizeObserver((entries) => {
-        const h = entries[0]?.contentRect.height ?? 0;
-        if (!h) return;
-        const px = Math.round(h * DPR);
-        if (!globe) {
-          init(h);
-        } else {
-          canvas!.width = px;
-          canvas!.height = px;
-        }
+    const initGlobe = () => {
+      if (globe) return;
+      const h = container.clientHeight;
+      if (!h) return;
+      const px = Math.round(h * DPR);
+      canvas.width = px;
+      canvas.height = px;
+      globe = createGlobe(canvas, {
+        devicePixelRatio: DPR,
+        width: px,
+        height: px,
+        phi: phi.current,
+        theta: 0.22,
+        dark: 1,
+        diffuse: 1.4,
+        mapSamples: 12000,
+        mapBrightness: 40,
+        baseColor: [0.05, 0.05, 0.13],
+        markerColor: [0.25, 0.55, 1.0],
+        glowColor: [0.12, 0.28, 0.65],
+        markers: [
+          { location: [37.09, -95.71], size: 0.08 }, // USA
+          { location: [51.51, -0.13], size: 0.08 }, // UK
+          { location: [50.11, 8.68], size: 0.07 }, // Europe (Frankfurt)
+          { location: [20.59, 78.96], size: 0.09 }, // India
+        ],
+        onRender(state) {
+          if (!isDragging.current) phi.current += 0.004;
+          state.phi = phi.current;
+          state.width = canvas.width;
+          state.height = canvas.height;
+        },
       });
-      ro.observe(container);
     };
 
-    // Defer heavy WebGL init until the tile is actually visible — prevents
-    // main-thread stutter while the user is scrolling toward this section.
+    const destroyGlobe = () => {
+      globe?.destroy();
+      globe = null;
+    };
+
+    // Resize: only update canvas dimensions while globe is active
+    const ro = new ResizeObserver((entries) => {
+      const h = entries[0]?.contentRect.height ?? 0;
+      if (!h || !globe) return;
+      const px = Math.round(h * DPR);
+      canvas.width = px;
+      canvas.height = px;
+    });
+    ro.observe(container);
+
+    // Persistent observer — starts globe on first entry, pauses when scrolled
+    // away, resumes when scrolled back. Truly stops the WebGL RAF loop.
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          startGlobe();
-          io.disconnect();
+          initGlobe();
+        } else {
+          destroyGlobe();
         }
       },
       { threshold: 0.1 },
@@ -96,9 +97,9 @@ function GlobeTile() {
 
     return () => {
       io.disconnect();
-      ro?.disconnect();
+      ro.disconnect();
       globe?.destroy();
-      canvas?.remove();
+      canvas.remove();
     };
   }, []);
 

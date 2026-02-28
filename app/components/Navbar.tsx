@@ -13,7 +13,8 @@ import logoLink from "/YTlogo.png";
 import { FaBarsStaggered } from "react-icons/fa6";
 
 const NavBar = () => {
-  const base = "transition hover:text-blue-400 flex items-center gap-2 hover:glass-transparent p-2";
+  const base =
+    "transition hover:text-blue-400 flex items-center gap-2 hover:glass-transparent p-2";
   const active =
     " glass-transparent p-2 border-b-3 border-b-white flex items-center gap-2";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,16 +25,6 @@ const NavBar = () => {
     Blogs: "/blogs",
     About: "/about",
   };
-  const navContainer = {
-    start: { opacity: 0, y: -10 },
-    end: { opacity: 1, y: 0 },
-  };
-
-  const links = {
-    start: { opacity: 0, x: 10 },
-    end: { opacity: 1, x: 0 },
-  };
-
   const linkIcons: Record<string, JSX.Element> = {
     Home: <FaHome />,
     Projects: <FaProjectDiagram />,
@@ -72,7 +63,8 @@ const NavBar = () => {
                   className={({ isActive }) => (isActive ? active : base)}
                   to={pagePath[page as keyof typeof pagePath]}
                 >
-                  {linkIcons[page]}{page}
+                  {linkIcons[page]}
+                  {page}
                 </NavLink>
               ))}
             </div>
@@ -88,27 +80,50 @@ const NavBar = () => {
             </button>
           </div>
         </div>
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false}>
           {menuOpen && (
             <motion.div
-              className="md:hidden bg-white/5 border-t border-white/10 px-6 py-6 space-y-2 text-center flex flex-col items-center gap-4"
-              variants={navContainer}
-              initial="start"
-              animate="end"
-              exit="start"
-              transition={{ staggerChildren: 0.15, duration: 0.85 }}
+              key="mobile-menu"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              className="md:hidden overflow-hidden"
             >
-              {Object.keys(pagePath).map((page) => (
-                <motion.span key={page} variants={links}>
-                  <NavLink
-                    className={({ isActive }) => (isActive ? active : base)}
-                    to={pagePath[page as keyof typeof pagePath]}
-                    onClick={closeMenu}
+              <motion.div
+                className="bg-white/5 border-t border-white/10 px-6 py-6 flex flex-col items-center gap-4 text-center"
+                initial="start"
+                animate="end"
+                exit="start"
+                variants={{
+                  end: {
+                    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
+                  },
+                  start: {
+                    transition: { staggerChildren: 0.04, staggerDirection: -1 },
+                  },
+                }}
+              >
+                {Object.keys(pagePath).map((page) => (
+                  <motion.span
+                    key={page}
+                    variants={{
+                      start: { opacity: 0, x: 12 },
+                      end: { opacity: 1, x: 0 },
+                    }}
+                    transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    {linkIcons[page]}{page}
-                  </NavLink>
-                </motion.span>
-              ))}
+                    <NavLink
+                      className={({ isActive }) => (isActive ? active : base)}
+                      to={pagePath[page as keyof typeof pagePath]}
+                      onClick={closeMenu}
+                    >
+                      {linkIcons[page]}
+                      {page}
+                    </NavLink>
+                  </motion.span>
+                ))}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
