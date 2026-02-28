@@ -1,6 +1,7 @@
 import LetterGlitch from "./LetterGlitch";
 import Button from "~/components/ui/Button";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { FaChevronDown } from "react-icons/fa";
 import {
   EASE,
   fadeInUp,
@@ -30,30 +31,36 @@ const textExpandAnimation = {
 };
 
 const Hero = () => {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <header className="h-screen max-w-full! px-0! mx-auto relative">
+    <header className="h-svh max-w-full! px-0! mx-auto relative">
       <div className="absolute w-full h-svh z-0">
-        <LetterGlitch
-          glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
-          glitchSpeed={100}
-          centerVignette={true}
-          characters="ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಚಜಟಡತದನಪಬಮಯರಲವಶಸಹಳ೦೧೨೩೪೫೬೭೮೯ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*()-_+=/[]{};:<>.,"
-        />
+        {reducedMotion ? (
+          <div className="w-full h-svh bg-gray-950" />
+        ) : (
+          <LetterGlitch
+            glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
+            glitchSpeed={100}
+            centerVignette={true}
+            characters="ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಚಜಟಡತದನಪಬಮಯರಲವಶಸಹಳ೦೧೨೩೪೫೬೭೮೯ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*()-_+=/[]{};:<>.,"
+          />
+        )}
       </div>
 
       <div className="h-screen absolute z-1 left-0 right-0 flex flex-col justify-center items-center text-center gap-4">
         <motion.span
-          className="glass px-4 flex justify-center items-center gap-3 font-thin"
+          className="glass px-4 flex justify-center items-center gap-3 font-thin text-sm"
           {...fadeInUp}
           transition={{ duration: 0.5, ease: EASE }}
         >
           <motion.span
             className="block bg-green-500 h-2 w-2 rounded-full"
-            {...pulseAnimation}
+            {...(reducedMotion ? {} : pulseAnimation)}
           />
           <motion.span
             className="text-nowrap overflow-hidden"
-            {...textExpandAnimation}
+            {...(reducedMotion ? {} : textExpandAnimation)}
           >
             Scanning for new challenges...
           </motion.span>
@@ -75,29 +82,61 @@ const Hero = () => {
           {...fadeInUp}
           transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
         >
-          Building meaningful things for the web. <br />
-          With a focus on performance and real-world impact.
+          Building meaningful things for the web. With a focus on performance
+          and real-world impact.
         </motion.p>
 
         <motion.div
-          className="flex gap-2 md:gap-4"
+          className="grid grid-cols-2 gap-3 w-[min(100%,480px)] px-6 sm:px-0"
           variants={heroCTAContainerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.span variants={heroCTAItemVariants} whileHover={{ y: -2 }}>
-            <Button to="/projects">View Projects</Button>
+          <motion.span variants={heroCTAItemVariants} className="col-span-2">
+            <Button to="/projects" className="w-full py-3 text-base">
+              View Projects
+            </Button>
           </motion.span>
-          <motion.span variants={heroCTAItemVariants} whileHover={{ y: -2 }}>
-            <Button to="/about" variant="secondary">
-              Check About
+          <motion.span variants={heroCTAItemVariants}>
+            <Button to="/about" variant="secondary" className="w-full">
+              About Me
+            </Button>
+          </motion.span>
+          <motion.span variants={heroCTAItemVariants}>
+            <Button
+              href="mailto:reachme@yateesh.tech"
+              variant="secondary"
+              className="w-full"
+            >
+              Get In Touch
             </Button>
           </motion.span>
         </motion.div>
       </div>
 
+      {/* Scroll indicator */}
+      <motion.div
+        className="pointer-events-none absolute bottom-10 left-1/2 -translate-x-1/2 z-3 flex flex-col items-center gap-1 text-white/40"
+        initial={{ opacity: 0, y: -4 }}
+        animate={
+          reducedMotion
+            ? { opacity: 1, y: 0 }
+            : { opacity: [0.3, 1, 0.3], y: [0, 6, 0] }
+        }
+        transition={
+          reducedMotion
+            ? { duration: 2}
+            : { duration: 2, repeat: Infinity, ease: "easeInOut" }
+        }
+      >
+        <span className="text-xs tracking-widest uppercase font-mono">
+          scroll
+        </span>
+        <FaChevronDown className="text-lg" />
+      </motion.div>
+
       {/* Bottom fade — dissolves into the page background */}
-      <div className="pointer-events-none absolute bottom-0 inset-x-0 z-2 h-64 bg-linear-to-b from-transparent to-gray-950" />
+      <div className="pointer-events-none absolute bottom-0 inset-x-0 z-2 h-32 bg-linear-to-b from-transparent to-gray-950" />
     </header>
   );
 };

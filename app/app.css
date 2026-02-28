@@ -16,19 +16,19 @@ body {
 @layer base {
   /* ===== Display ===== */
   .display {
-    font-size: clamp(2.75rem, 6vw, 4.5rem);
-    @apply font-semibold tracking-tight leading-[1.05] font-display;
+    font-size: clamp(2.75rem, 6vw, 3.5rem);
+    @apply font-semibold tracking-tight leading-[1.05] font-display text-balance;
   }
 
   /* ===== Headings ===== */
   h1 {
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    @apply font-semibold tracking-tight leading-tight;
+    font-size: clamp(2rem, 4vw, 3rem);
+    @apply font-semibold tracking-tight leading-tight text-balance;
   }
 
   h2 {
     font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-    @apply font-semibold tracking-tight leading-snug;
+    @apply font-semibold tracking-tight leading-snug text-balance;
   }
 
   h3 {
@@ -73,11 +73,11 @@ body {
 }
 
 @utility btn-primary {
-  @apply glass btn rise;
+  @apply bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold shadow-lg shadow-blue-900/40 btn rise;
 }
 
 @utility btn-secondary {
-  @apply bg-blue-100 hover:bg-white text-black btn rise border;
+  @apply glass btn rise;
 }
 
 @utility page-section {
@@ -89,8 +89,8 @@ body {
 }
 
 @utility page-subtitle {
-  font-size: clamp(0.875rem, 1vw, 1rem);
-  @apply text-zinc-400 leading-relaxed max-w-2xl;
+  font-size: clamp(0.875rem, 1vw, 1.5rem);
+  @apply text-zinc-300 leading-relaxed max-w-2xl text-balance;
 }
 
 @utility gradient-divider {
