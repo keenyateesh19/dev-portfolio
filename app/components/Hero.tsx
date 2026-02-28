@@ -40,8 +40,8 @@ const Hero = () => {
           <div className="w-full h-svh bg-gray-950" />
         ) : (
           <LetterGlitch
-            glitchColors={["#2b4539", "#61dca3", "#61b3dc"]}
-            glitchSpeed={20}
+            glitchColors={["#06b6d4", "#3b82f6", "#9333ea"]}
+            glitchSpeed={200}
             centerVignette={true}
             characters="ಅಆಇಈಉಊಋಎಏಐಒಓಔಕಖಗಘಚಜಟಡತದನಪಬಮಯರಲವಶಸಹಳ೦೧೨೩೪೫೬೭೮೯ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$&*()-_+=/[]{};:<>.,"
           />

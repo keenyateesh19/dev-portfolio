@@ -40,8 +40,7 @@ const BlogDetailsPage = ({ loaderData }: BlogDetailsPageProps) => {
   const mins = readingTime(markdown);
 
   return (
-    <section className="page-section">
-      <PageBackground />
+    <section className="mt-10 md:mt-15">
 
       <div className="max-w-3xl mx-auto relative z-10 pt-16">
         <BackLink to="/blogs" label="Back to Blog" />

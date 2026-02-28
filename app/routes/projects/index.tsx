@@ -47,7 +47,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <motion.div
-          className="text-center mb-12 pt-24 md:pt-28 pb-10"
+          className="text-center mb-6 pt-24 md:pt-28"
           {...fadeInUp}
           transition={{ duration: 0.6, ease: EASE }}
         >

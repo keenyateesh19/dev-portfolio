@@ -2,7 +2,6 @@ import Hero from "~/components/Hero";
 import BioSection from "~/components/BioSection";
 import BentoSection from "~/components/BentoSection";
 import FeaturedProjects from "~/components/FeaturedProjects";
-import SkillsSection from "~/components/SkillsSection";
 import LatestPosts from "~/components/LatestPosts";
 import AboutCTA from "~/components/AboutCTA";
 import type { Route } from "./+types/index";
@@ -38,7 +37,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       </section>
       <FeaturedProjects projects={featuredProjects} />
       <BentoSection />
-      <SkillsSection />
+
       <LatestPosts posts={postMeta} />
       <AboutCTA />
     </>
