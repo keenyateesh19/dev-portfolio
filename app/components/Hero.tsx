@@ -52,7 +52,7 @@ const Hero = () => {
           <Prism
             animationType="3drotate"
             timeScale={0.5}
-            height={2}
+            height={5}
             baseWidth={5}
             scale={2}
             hueShift={0.13}

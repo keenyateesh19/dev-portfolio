@@ -90,7 +90,7 @@ body {
 
 @utility page-subtitle {
   font-size: clamp(0.875rem, 1vw, 1.5rem);
-  @apply text-zinc-300 leading-relaxed max-w-2xl text-balance;
+  @apply text-zinc-300 leading-relaxed max-w-2xl;
 }
 
 @utility gradient-divider {
