@@ -17,7 +17,7 @@ const ProjectCard = ({
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
       className="h-full"
     >
-      <Link to={`/projects/${project.id}`} className="group block h-full">
+      <Link to={`/projects/${project.documentId}`} className="group block h-full">
         <div className="glass overflow-hidden h-full flex flex-col relative">
           {/* Image */}
           <div

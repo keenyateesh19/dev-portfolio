@@ -1,4 +1,4 @@
-import type { PostMeta } from "~/types";
+import type { PostMeta, StrapiPostMeta, StrapiResponse } from "~/types";
 import type { Route } from "./+types/details";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -11,37 +11,50 @@ import { fadeInUp } from "~/lib/motion";
 export async function loader({ request, params }: Route.LoaderArgs) {
   const { slug } = params;
 
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/post-meta`);
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/posts?filters[slug][$eg]=${slug}&populate=image`,
+  );
   if (!res.ok) throw new Error("Failed to fetch post meta data");
-  const metaData = await res.json();
-  const postMeta = metaData.find((post: PostMeta) => post.slug === slug);
+  const json: StrapiResponse<StrapiPostMeta> = await res.json();
 
-  if (!postMeta) throw new Response("Post doesn't exist...", { status: 404 });
+  if (!json.data.length)
+    throw new Response(
+      "The blog you are looking for might be deleted or doesn't exist...",
+      { status: 404 },
+    );
 
-  const markdown = await import(`../../posts/${slug}.md?raw`);
+  const item = json.data[0];
 
-  return {
-    postMeta,
-    markdown: markdown.default as string,
+  const postMeta = {
+    id: item.id,
+    slug: item.slug,
+    excerpt: item.excerpt,
+    title: item.title,
+    date: item.date,
+    body: item.body,
+    image: item.image?.url
+      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      : "/image/no-image.png",
   };
+
+  return { postMeta };
 }
 
 interface BlogDetailsPageProps {
   loaderData: {
-    postMeta: PostMeta;
+    postMeta: StrapiPostMeta;
     markdown: string;
   };
 }
 
 const BlogDetailsPage = ({ loaderData }: BlogDetailsPageProps) => {
-  const { postMeta, markdown } = loaderData;
+  const { postMeta } = loaderData;
 
   const formattedDate = formatDate(postMeta.date);
-  const mins = readingTime(markdown);
+  const mins = readingTime(postMeta.body);
 
   return (
-    <section className="mt-10 md:mt-15">
-
+    <section className="my-10 md:my-15">
       <div className="max-w-3xl mx-auto relative z-10 pt-16">
         <BackLink to="/blogs" label="Back to Blog" />
 
@@ -80,7 +93,7 @@ const BlogDetailsPage = ({ loaderData }: BlogDetailsPageProps) => {
         {/* Markdown body */}
         <motion.div {...fadeInUp} transition={{ delay: 0.2, duration: 0.6 }}>
           <div className="prose-content">
-            <ReactMarkdown>{markdown}</ReactMarkdown>
+            <ReactMarkdown>{postMeta.body}</ReactMarkdown>
           </div>
         </motion.div>
       </div>

@@ -1,6 +1,6 @@
 import ProjectCard from "~/components/ProjectCard";
 import type { Route } from "./+types/index";
-import type { Project } from "~/types";
+import type { Project, StrapiProject, StrapiResponse } from "~/types";
 import { useState } from "react";
 import Pagination from "~/components/Pagination";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,16 +15,31 @@ import {
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects`);
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects?populate=*`);
   if (!res.ok) throw new Error("Failed to load projects...");
-  const projects = await res.json();
+  const json: StrapiResponse<StrapiProject> = await res.json();
+  const projects = json.data.map((item) => ({
+    id: item.id,
+    documentId: item.documentId,
+    title: item.title,
+    description: item.description,
+    image: item.image?.url ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}` : '/images/no-image.png',
+    url: item.url,
+    date: item.date,
+    category: item.category,
+    featured: item.featured,
+    keyFeatures: item.keyFeatures.split(', '),
+    techStack: item.techStack.split(', '),
+    challenges: item.challenges,
+    learnings: item.learnings
+  }))
 
   return { projects };
 }
 
 const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const [categorySelect, setCategorySelect] = useState("All");
-  const { projects } = loaderData as { projects: Project[] };
+  const { projects } = loaderData as { projects: Project[] }; 
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 9;
   const categories = [

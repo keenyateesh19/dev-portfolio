@@ -52,7 +52,7 @@ body {
   }
 
   p {
-    @apply text-[clamp(1rem,1.2vw,1.25rem)] leading-[clamp(1.6,1.8vw,1.9)] tracking-[-0.01em] max-w-[65ch];
+    @apply text-[clamp(1rem,1.2vw,1.125rem)] leading-[clamp(1.6,1.8vw,1.9)] tracking-[-0.01em] max-w-[65ch];
   }
 }
 

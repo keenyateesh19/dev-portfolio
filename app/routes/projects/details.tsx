@@ -1,34 +1,43 @@
 import { FaArrowRight } from "react-icons/fa";
 import type { Route } from "./+types/details";
-import type { Project } from "~/types";
+import type { Project, StrapiProject, StrapiResponse } from "~/types";
 import { motion } from "framer-motion";
 import BackLink from "~/components/BackLink";
 import SectionHeading from "~/components/ui/SectionHeading";
 import { formatDate } from "~/lib/utils";
 import { fadeInUp, fadeInRight, scaleIn } from "~/lib/motion";
 
-export async function clientLoader({
+export async function loader({
   request,
   params,
-}: Route.ClientLoaderArgs): Promise<Project> {
+}: Route.LoaderArgs): Promise<Project> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/projects/${params.id}`,
+    `${import.meta.env.VITE_API_URL}/projects/?filters[documentId][$eq]=${params.id}&populate=*`,
   );
-  const project = await res.json();
-  return project;
-}
 
-export function HydrateFallback() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <motion.div
-        className="glass px-10 py-6 text-gray-300 text-sm"
-        {...scaleIn}
-      >
-        Loading project...
-      </motion.div>
-    </div>
-  );
+  if (!res.ok) throw new Response("Project not found", { status: 404 });
+
+  const json: StrapiResponse<StrapiProject> = await res.json();
+  const item = json.data[0];
+
+  const project = {
+    id: item.id,
+    documentId: item.documentId,
+    title: item.title,
+    description: item.description,
+    image: item.image?.url
+      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      : "/images/no-image.png",
+    url: item.url,
+    date: item.date,
+    category: item.category,
+    featured: item.featured,
+    keyFeatures: item.keyFeatures.split(", "),
+    techStack: item.techStack.split(", "),
+    challenges: item.challenges,
+    learnings: item.learnings,
+  };
+  return project;
 }
 
 const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
@@ -37,7 +46,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <section className="page-section">
-      <div className="max-w-5xl mx-auto relative z-10 pt-16">
+      <div className="max-w-5xl mx-auto relative z-10 pt-35 pb-10 md:pb-15">
         <BackLink to="/projects" label="Back to Projects" />
 
         {/* Hero Image */}
