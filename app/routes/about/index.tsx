@@ -2,7 +2,7 @@ import BioSection from "~/components/BioSection";
 import ExperienceCard from "~/components/ExperienceCard";
 import SkillsSection from "~/components/SkillsSection";
 import AboutCTA from "~/components/AboutCTA";
-import type { Experience } from "~/types";
+import type { Experience, StrapiExperience, StrapiResponse } from "~/types";
 import type { Route } from "./+types/index";
 import Eyebrow from "~/components/ui/Eyebrow";
 import { motion } from "framer-motion";
@@ -16,13 +16,21 @@ import {
 
 export async function loader({
   request,
-  params,
 }: Route.LoaderArgs): Promise<{ experiences: Experience[] }> {
   const res = await fetch(import.meta.env.VITE_API_URL + "/experiences");
   if (!res.ok) {
     throw new Response("Failed to fetch experiences", { status: res.status });
   }
-  const experiences = await res.json();
+  const json: StrapiResponse<StrapiExperience> = await res.json();
+  const experiences = json.data.map((experience) => ({
+    role: experience.role,
+    company: experience.company,
+    location: experience.location,
+    startDate: experience.startDate,
+    endDate: experience.endDate,
+    description: experience.description,
+    technologies: experience.technologies.split(', ')
+  }))
   return { experiences };
 }
 

@@ -1,3 +1,4 @@
+import ReactMarkdown from "react-markdown";
 interface ExperienceCardProps {
   role: string;
   company: string;
@@ -18,7 +19,7 @@ const ExperienceCard = ({
   technologies,
 }: ExperienceCardProps) => {
   return (
-    <div className="glass p-5 rounded flex flex-col gap-4 rise transition-all duration-300">
+    <div className="glass p-5 rounded flex flex-col gap-4 rise transition-all duration-300 cursor-pointer">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
         <div>
@@ -41,9 +42,12 @@ const ExperienceCard = ({
       <div className="border-t border-white/10" />
 
       {/* Description */}
-      <p className="text-zinc-400 text-sm leading-relaxed m-0 max-w-none">
-        {description}
-      </p>
+      <div className="text-zinc-400 text-sm leading-relaxed m-0 max-w-[73%] px-3 [&_li]:list-disc [&_li]:mb-1.5">
+        <ReactMarkdown>
+          {description}
+          
+          </ReactMarkdown>
+      </div>
 
       {/* Technologies */}
       <div className="flex flex-wrap gap-2">

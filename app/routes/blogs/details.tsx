@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { FaCalendarAlt, FaClock } from "react-icons/fa";
 import BackLink from "~/components/BackLink";
-import PageBackground from "~/components/PageBackground";
 import { formatDate, readingTime } from "~/lib/utils";
 import { fadeInUp } from "~/lib/motion";
 
