@@ -11,7 +11,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const { slug } = params;
 
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL}/posts?filters[slug][$eg]=${slug}&populate=image`,
+    `${import.meta.env.VITE_API_URL}/posts?filters[slug][$eq]=${slug}&populate=image`,
   );
   if (!res.ok) throw new Error("Failed to fetch post meta data");
   const json: StrapiResponse<StrapiPostMeta> = await res.json();

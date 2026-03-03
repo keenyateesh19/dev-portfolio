@@ -8,7 +8,7 @@ import {
   FaCopy,
   FaCheck,
 } from "react-icons/fa";
-import logoLink from "/YTlogo.png";
+import logoLink from "/YTlogo.webp";
 
 const navLinks = [
   { label: "Home", to: "/", icon: <FaHome /> },

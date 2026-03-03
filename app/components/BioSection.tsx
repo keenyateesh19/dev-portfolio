@@ -48,9 +48,9 @@ const BioSection = ({
           custom={0.15}
         >
           <Heading className="font-display mb-0">
-            Adrenaline Fueled.{" "}
+            I'm Yateesh - Problem Solver &{" "}
             <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Impact Driven.
+              Builder.
             </span>
           </Heading>
         </motion.div>
@@ -62,21 +62,19 @@ const BioSection = ({
           custom={0.25}
         >
           <p className="mb-2">
-            I live for the thrill of the unknown on treks, in ideas and in the
-            things I build. As an explorer at heart and a builder by passion,
-            I'm driven to create meaningful solutions that empower people at
-            scale.
+            I’m Yateesh S, a passionate full-stack developer focused on building
+            modern and engaging web applications. From crafting responsive
+            frontends to developing reliable backend systems, I enjoy solving
+            complex problems with clean and efficient code.
           </p>
           <p className="mb-2">
-            Trekking has taught me resilience, adaptability, and the value of
-            stepping outside comfort zones lessons that deeply influence how I
-            approach building and problem-solving.
+            I primarily work with React and Node.js, and I’m always looking to
+            sharpen my skills and explore new technologies.
           </p>
           <p className="mb-4">
-            I'm fueled by curiosity and a constant desire to learn, experiment,
-            and push limits. I believe real growth happens when we challenge
-            what exists today and that's what keeps me chasing ideas that can
-            make a lasting impact.
+            When I’m not coding, I’m learning, experimenting, and staying
+            curious about how things work. I believe in growing a little every
+            day and building work that truly makes an impact.
           </p>
         </motion.div>
         <motion.div

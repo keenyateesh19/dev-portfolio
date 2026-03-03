@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { NavLink } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import logoLink from "/YTlogo.png";
+import logoLink from "/YTlogo.webp";
 import { FaBarsStaggered } from "react-icons/fa6";
 
 const NavBar = () => {

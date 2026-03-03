@@ -42,7 +42,7 @@ const ExperienceCard = ({
       <div className="border-t border-white/10" />
 
       {/* Description */}
-      <div className="text-zinc-400 text-sm leading-relaxed m-0 max-w-[73%] px-3 [&_li]:list-disc [&_li]:mb-1.5">
+      <div className="text-zinc-400 text-sm leading-relaxed m-0 md:max-w-[73%] px-3 [&_li]:list-disc [&_li]:mb-1.5">
         <ReactMarkdown>
           {description}
           

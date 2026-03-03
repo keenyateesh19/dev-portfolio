@@ -12,6 +12,7 @@ export type Project = {
   techStack?: string[];
   challenges?: string;
   learnings?: string;
+  slug: string;
 };
 
 export type Experience = {
@@ -40,6 +41,7 @@ export type StrapiProject = {
   id: string;
   documentId: string;
   title: string;
+  slug: string;
   description: string;
   image?: {
     url: string;
@@ -87,4 +89,4 @@ export type StrapiExperience = {
   endDate: string;
   description: string;
   technologies: string;
-}
+};
