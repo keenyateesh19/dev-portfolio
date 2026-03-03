@@ -34,7 +34,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="fixed top-4 left-0 right-0 z-50 px-4">
+    <nav className="fixed top-4 left-0 right-0 z-50">
       <motion.div
         className="max-w-6xl mx-auto glass"
         initial={{ opacity: 0, y: -5 }}

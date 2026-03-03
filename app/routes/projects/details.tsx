@@ -7,10 +7,7 @@ import SectionHeading from "~/components/ui/SectionHeading";
 import { formatDate } from "~/lib/utils";
 import { fadeInUp, fadeInRight, scaleIn } from "~/lib/motion";
 
-export async function loader({
-  request,
-  params,
-}: Route.LoaderArgs): Promise<Project> {
+export async function loader({ request, params }: Route.LoaderArgs) {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/projects/?filters[slug][$eq]=${params.id}&populate=*`,
   );
@@ -20,7 +17,7 @@ export async function loader({
   const json: StrapiResponse<StrapiProject> = await res.json();
   const item = json.data[0];
 
-  const project = {
+  const project: Project = {
     id: item.id,
     documentId: item.documentId,
     title: item.title,
@@ -36,11 +33,33 @@ export async function loader({
     learnings: item.learnings,
     slug: item.slug,
   };
-  return project;
+
+  const siteUrl = new URL(request.url).origin;
+
+  return { project, siteUrl };
+}
+
+export function meta({ data }: Route.MetaArgs) {
+  if (!data?.project) return [{ title: "Project | Yateesh S" }];
+
+  const { project, siteUrl } = data;
+  const canonicalUrl = `${siteUrl}/projects/${project.slug}`;
+
+  return [
+    { title: `${project.title}` },
+    { name: "description", content: project.description },
+    { name: "robots", content: "index, follow" },
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: project.title },
+    { property: "og:description", content: project.description },
+    { property: "og:url", content: canonicalUrl },
+    { property: "og:image", content: project.image },
+    { property: "og:site_name", content: "Yateesh S" },
+  ];
 }
 
 const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
-  const project = loaderData;
+  const project = loaderData.project;
   const date = formatDate(project.date);
 
   return (

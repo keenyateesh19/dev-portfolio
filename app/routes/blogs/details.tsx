@@ -36,7 +36,27 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       : "/image/no-image.png",
   };
 
-  return { postMeta };
+  const siteUrl = new URL(request.url).origin;
+
+  return { postMeta, siteUrl };
+}
+
+export function meta({ data }: Route.MetaArgs) {
+  if (!data?.postMeta) return [{ title: "Blog Post | Yateesh S" }];
+
+  const { postMeta, siteUrl } = data;
+  const canonicalUrl = `${siteUrl}/blogs/${postMeta.slug}`;
+
+  return [
+    { title: `${postMeta.title} | Yateesh S Blog` },
+    { name: "description", content: postMeta.excerpt },
+    { name: "robots", content: "index, follow" },
+    { property: "og:type", content: "article" },
+    { property: "og:title", content: postMeta.title },
+    { property: "og:description", content: postMeta.excerpt },
+    { property: "og:url", content: canonicalUrl },
+    { property: "og:site_name", content: "Yateesh S Blog" },
+  ];
 }
 
 interface BlogDetailsPageProps {

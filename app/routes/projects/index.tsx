@@ -12,10 +12,32 @@ import {
   fadeInUp,
 } from "~/lib/motion";
 
+export function meta(): ReturnType<Route.MetaFunction> {
+  return [
+    { title: "Projects | Yateesh S" },
+    {
+      name: "description",
+      content:
+        "Browse projects built by Yateesh S — from full-stack web apps to UI designs.",
+    },
+    { name: "robots", content: "index, follow" },
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: "Projects | Yateesh S" },
+    {
+      property: "og:description",
+      content:
+        "Browse projects built by Yateesh S — from full-stack web apps to UI designs.",
+    },
+    { property: "og:site_name", content: "Yateesh S" },
+  ];
+}
+
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/projects?populate=*`);
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/projects?populate=*`,
+  );
   if (!res.ok) throw new Error("Failed to load projects...");
   const json: StrapiResponse<StrapiProject> = await res.json();
   const projects = json.data.map((item) => ({
@@ -23,24 +45,24 @@ export async function loader({
     documentId: item.documentId,
     title: item.title,
     description: item.description,
-    image: item.image?.url ? item.image.url : '/images/no-image.png',
+    image: item.image?.url ? item.image.url : "/images/no-image.png",
     url: item.url,
     date: item.date,
     category: item.category,
     featured: item.featured,
-    keyFeatures: item.keyFeatures.split(', '),
-    techStack: item.techStack.split(', '),
+    keyFeatures: item.keyFeatures.split(", "),
+    techStack: item.techStack.split(", "),
     challenges: item.challenges,
     learnings: item.learnings,
-    slug: item.slug
-  }))
+    slug: item.slug,
+  }));
 
   return { projects };
 }
 
 const projectsPage = ({ loaderData }: Route.ComponentProps) => {
   const [categorySelect, setCategorySelect] = useState("All");
-  const { projects } = loaderData as { projects: Project[] }; 
+  const { projects } = loaderData as { projects: Project[] };
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 9;
   const categories = [
@@ -120,7 +142,7 @@ const projectsPage = ({ loaderData }: Route.ComponentProps) => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="mx-6 grid gap-6 sm:grid-cols-2 lg:gap-12 lg:grid-cols-3 mb-12"
+            className="mx-6 grid gap-6 sm:grid-cols-2 lg:gap-12 lg:grid-cols-3 mb-20"
           >
             {currentProjects.map((project) => (
               <motion.div key={project.id} variants={itemVariants} layout>

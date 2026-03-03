@@ -7,10 +7,32 @@ import PostFilter from "~/components/PostFilter";
 import { containerVariants, itemVariants, EASE, fadeInUp } from "~/lib/motion";
 import Pagination from "~/components/Pagination";
 
+export function meta(): ReturnType<Route.MetaFunction> {
+  return [
+    { title: "Blog | Yateesh S" },
+    {
+      name: "description",
+      content:
+        "Read articles on web development, design, and software engineering by Yateesh S.",
+    },
+    { name: "robots", content: "index, follow" },
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: "Blog | Yateesh S" },
+    {
+      property: "og:description",
+      content:
+        "Read articles on web development, design, and software engineering by Yateesh S.",
+    },
+    { property: "og:site_name", content: "Yateesh S" },
+  ];
+}
+
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ postMeta: PostMeta[] }> {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/posts?populate=image&sort=date:desc`);
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/posts?populate=image&sort=date:desc`,
+  );
   if (!res.ok) throw new Error("Failed to load blog posts...");
   const json: StrapiResponse<StrapiPostMeta> = await res.json();
   const postMeta = json.data.map((item) => ({
@@ -20,7 +42,9 @@ export async function loader({
     slug: item.slug,
     date: item.date,
     body: item.body,
-    image: item.image?.url ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}` : '/images/no-image.png'
+    image: item.image?.url
+      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      : "/images/no-image.png",
   }));
 
   return { postMeta };

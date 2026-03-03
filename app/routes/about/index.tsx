@@ -14,6 +14,26 @@ import {
   itemVariants,
 } from "~/lib/motion";
 
+export function meta(): ReturnType<Route.MetaFunction> {
+  return [
+    { title: "About | Yateesh S" },
+    {
+      name: "description",
+      content:
+        "Learn more about Yateesh S — a freelance Web Designer & Developer with experience building modern web applications.",
+    },
+    { name: "robots", content: "index, follow" },
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: "About | Yateesh S" },
+    {
+      property: "og:description",
+      content:
+        "Learn more about Yateesh S — a freelance Web Designer & Developer with experience building modern web applications.",
+    },
+    { property: "og:site_name", content: "Yateesh S" },
+  ];
+}
+
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<{ experiences: Experience[] }> {
@@ -29,8 +49,8 @@ export async function loader({
     startDate: experience.startDate,
     endDate: experience.endDate,
     description: experience.description,
-    technologies: experience.technologies.split(', ')
-  }))
+    technologies: experience.technologies.split(", "),
+  }));
   return { experiences };
 }
 
