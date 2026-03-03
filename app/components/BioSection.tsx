@@ -122,10 +122,11 @@ const BioSection = ({
           title="Full Stack Developer"
           status="Thrill-seeker. Builder. Problem-solver."
           contactText="Contact"
-          avatarUrl="/profile.webp"
+          avatarUrl="/profile.png"
           showUserInfo={false}
           enableTilt={true}
-          innerGradient="linear-gradient(145deg,transparent 0%, transparent 100%)"
+          behindGlowColor="rgba(125, 190, 255, 0.67)"
+          innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
         />
       </motion.div>
     </div>
