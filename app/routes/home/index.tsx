@@ -53,7 +53,6 @@ export async function loader(): Promise<{
 
   const projectsJson: StrapiResponse<StrapiProject> = await projectsRes.json();
   const postJson: StrapiResponse<StrapiPostMeta> = await postsRes.json();
-  console.log(projectsJson)
 
   const postMeta = postJson.data.map((item) => ({
     id: item.id,
