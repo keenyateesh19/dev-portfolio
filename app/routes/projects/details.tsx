@@ -64,7 +64,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
 
   return (
     <section className="page-section">
-      <div className="max-w-5xl mx-auto relative z-10 pt-35 pb-10 md:pb-15">
+      <div className="max-w-5xl mx-auto relative z-10 pt-25 md:pt-35 pb-10 md:pb-15">
         <BackLink to="/projects" label="Back to Projects" />
 
         {/* Hero Image */}
@@ -93,7 +93,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
         {/* Content */}
         <div className="grid md:grid-cols-3 gap-8 items-start">
           {/* Main content — left 2 cols */}
-          <div className="md:col-span-2 flex flex-col gap-8">
+          <div className="md:col-span-2 flex flex-col gap-8 order-last md:order-0">
             {/* Description */}
             <motion.div
               {...fadeInUp}
@@ -113,7 +113,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
               >
                 <SectionHeading color="purple">Key Features</SectionHeading>
                 <ul className="grid sm:grid-cols-2 gap-2">
-                  {project.keyFeatures.map((feature, i) => (
+                  {project.keyFeatures.map((feature: string, i: number) => (
                     <motion.li
                       key={i}
                       className="glass-transparent px-4 py-2.5 text-sm text-gray-300 flex items-center gap-2"
@@ -158,7 +158,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
 
           {/* Sidebar — right col */}
           <motion.div
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-5 order-first md:order-0"
             {...fadeInRight}
             transition={{ delay: 0.25, duration: 0.6 }}
           >
@@ -200,7 +200,7 @@ const ProjectDetailsPage = ({ loaderData }: Route.ComponentProps) => {
                   Tech Stack
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {project.techStack.map((tech) => (
+                  {project.techStack.map((tech: string) => (
                     <span
                       key={tech}
                       className="glass-transparent px-3 py-1 text-xs text-gray-300 font-medium"
