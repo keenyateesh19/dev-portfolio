@@ -38,11 +38,7 @@ const ProjectCard = ({
           {/* Content */}
           <div className="p-5 flex-1 flex flex-col">
             <div className="flex items-start justify-between gap-2 mb-2">
-              <h3
-                className={`font-semibold text-white group-hover:text-blue-300 transition-colors leading-snug ${
-                  featured ? "text-2xl" : "text-lg"
-                }`}
-              >
+              <h3 className="font-semibold text-white group-hover:text-blue-300 transition-colors leading-snug text-lg">
                 {project.title}
               </h3>
               <span className="glass-transparent px-2.5 py-1 text-xs font-medium text-blue-300 shrink-0">
@@ -50,11 +46,7 @@ const ProjectCard = ({
               </span>
             </div>
 
-            <p
-              className={`text-gray-400 leading-relaxed flex-1 ${
-                featured ? "text-sm line-clamp-3" : "text-xs line-clamp-2"
-              }`}
-            >
+            <p className="text-gray-400 leading-relaxed flex-1 text-xs line-clamp-2">
               {project.description}
             </p>
 

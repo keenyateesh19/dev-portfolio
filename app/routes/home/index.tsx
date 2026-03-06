@@ -53,6 +53,7 @@ export async function loader(): Promise<{
 
   const projectsJson: StrapiResponse<StrapiProject> = await projectsRes.json();
   const postJson: StrapiResponse<StrapiPostMeta> = await postsRes.json();
+  console.log(projectsJson)
 
   const postMeta = postJson.data.map((item) => ({
     id: item.id,
@@ -73,7 +74,7 @@ export async function loader(): Promise<{
     title: item.title,
     description: item.description,
     image: item.image?.url
-      ? `${import.meta.env.VITE_STRAPI_URL}${item.image.url}`
+      ? `${item.image.url}`
       : "/images/no-image.png",
     url: item.url,
     date: item.date,
@@ -83,6 +84,7 @@ export async function loader(): Promise<{
     techStack: item.techStack.split(", "),
     challenges: item.challenges,
     learnings: item.learnings,
+    slug: item.slug,
   }));
 
   return { featuredProjects, postMeta };
@@ -103,9 +105,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           />
         </div>
       </section>
-      {featuredProjects.length > 1 && (
-        <FeaturedProjects projects={featuredProjects} />
-      )}
+      <FeaturedProjects projects={featuredProjects} />
       <BentoSection />
 
       <LatestPosts posts={postMeta} />
