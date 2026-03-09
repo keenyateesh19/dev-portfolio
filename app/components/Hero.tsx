@@ -93,13 +93,13 @@ const Hero = () => {
           transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
         >
           Helping founders turn ideas into seamless{" "}
-          <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-balance text-transparent">
+          <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             Digital Experiences
           </span>
         </motion.h1>
 
         <motion.p
-          className="page-subtitle text-center"
+          className="page-subtitle text-center px-2"
           {...fadeInUp}
           transition={{ duration: 0.6, ease: EASE, delay: 0.2 }}
         >
